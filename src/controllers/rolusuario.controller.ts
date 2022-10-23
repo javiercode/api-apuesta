@@ -4,8 +4,8 @@ import { Tarea } from '../entities/mongo/Tarea';
 import { RolUsuario } from '../entities/mongo/RolUsuario';
 import { MongoDataSource } from "../configs/db";
 import jwt from 'jsonwebtoken';
-import UsersService from '../services/Usuario.service';
-import { createUserDto, createUserRegex } from '../entities/dto/UserDto';
+import RolUsersService from '../services/RolUsuario.service';
+import { createRolUserDto, RolUserRegex } from '../entities/dto/RolUserDto';
 
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
@@ -14,10 +14,7 @@ import { validateParams } from "../configs/General.functions";
 
 export async function test(req: Request, res: Response) {
     const { page, limit } = req.params;
-    const result = await UsersService.test(getAuthUser(req));
-    // validateParams("20",TypeKeyParamEnum.PK_ORACLE)
-    // validateParams("62e2ebb2b20fe65328149010",TypeKeyParamEnum.OBJECT_ID)
-    // validateParams("54",TypeKeyParamEnum.LIMIT)
+    const result = await RolUsersService.test(getAuthUser(req));
     return res.status(200).send(result);
 }
 
@@ -27,7 +24,7 @@ export async function listUsuario(req: Request, res: Response) {
     const resultLimit = validateParams(limit,TypeKeyParamEnum.LIMIT)
     let result;
     if(resultLimit.success && resultPage.success){
-        result = await UsersService.list(parseInt(limit), parseInt(page), getAuthUser(req));
+        result = await RolUsersService.list(parseInt(limit), parseInt(page), getAuthUser(req));
     }else{
         result = resultLimit.success? resultPage: resultLimit;
     }
@@ -35,21 +32,21 @@ export async function listUsuario(req: Request, res: Response) {
 }
 
 export async function createRolUsuario(req: Request, res: Response) {
-    const userDto = req.body as createUserDto;
+    const userDto = req.body as createRolUserDto;
     let result = validate(userDto);
     if(result.success){
-        result = await UsersService.create(userDto, getAuthUser(req));
+        result = await RolUsersService.create(userDto, getAuthUser(req));
     }
     return res.status(200).send(result);
 }
 
 export async function editRolUsuario(req: Request, res: Response) {
-    const userDto = req.body as createUserDto;
+    const userDto = req.body as createRolUserDto;
     const resultPk = validateParams(req.params.id,TypeKeyParamEnum.PK_ORACLE)
     
     let result = validate(userDto);
     if(result.success && resultPk.success){
-        result = await UsersService.edit(parseInt(req.params.id), userDto, getAuthUser(req));
+        result = await RolUsersService.edit(parseInt(req.params.id), userDto, getAuthUser(req));
     }else{
         result = result.success? resultPk: result;
     }
@@ -59,28 +56,28 @@ export async function editRolUsuario(req: Request, res: Response) {
 export async function deleteRolUsuario(req: Request, res: Response) {
     let result = validateParams(req.params.id,TypeKeyParamEnum.PK_ORACLE)
     if(result.success){
-        result = await UsersService.desactivarUser(parseInt(req.params.id), getAuthUser(req));
+        result = await RolUsersService.desactivarUser(parseInt(req.params.id), getAuthUser(req));
     }
     return res.status(200).send(result);
 }
 
 export async function listRoles(req: Request, res: Response) {
-    const result = await UsersService.listRoles();
+    const result = await RolUsersService.listRoles();
     return res.status(200).send(result);
 }
 
 export async function sucursalList(req: Request, res: Response) {
-    const result = await UsersService.listSucursales(100, 0);
+    const result = await RolUsersService.listSucursales(100, 0);
     return res.status(200).send(result);
 }
 
-function validate(dataForm: createUserDto): MessageResponse {
+function validate(dataForm: createRolUserDto): MessageResponse {
     let res: MessageResponse = { success: false, message: "Error de validación del(los) campo(s): ", code: 0 };
     try {
         let campoError = [] as string[];
-        Object.keys(createUserRegex).forEach((key:string) => {
-            const value = dataForm[key as keyof createUserDto];
-            const regexValue = createUserRegex[key as keyof createUserDto] as string;
+        Object.keys(RolUserRegex).forEach((key:string) => {
+            const value = dataForm[key as keyof createRolUserDto];
+            const regexValue = RolUserRegex[key as keyof createRolUserDto] as string;
             let regex = new RegExp(regexValue);
             if (!regex.test(value.toString())) {
                 campoError.push(key);

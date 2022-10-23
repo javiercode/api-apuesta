@@ -3,9 +3,11 @@ import { IAuth } from './interfaces/IAuth.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
-import UsersService from '../services/Usuario.service';
+import UsersService from './RolUsuario.service';
 import axios from "axios";
 import https from 'https';
+import * as crypto from "crypto";
+import { findCredenciales } from '../repositories/User.Repository';
 
 
 class AuthService implements IAuth {
@@ -26,9 +28,9 @@ class AuthService implements IAuth {
                         message: 'Sesion iniciada',
                         code: 0,
                         data: {
-                            'NOMBRE': username,
+                            'NOMBRE': verifyUser.data?.name,
+                            'CORREO': verifyUser.data?.correo,
                             'ROL_ID': 0,
-                            'ROL_PRINCIPAL': "",
                             'SUCURSALES': [],
                             'SUCURSAL_PRINCIPAL': 0,
                         }
@@ -47,15 +49,23 @@ class AuthService implements IAuth {
 
     }
 
-    async verifyCredential(username: string, password: string): Promise<LoginResponce> {
-        let result: LoginResponce = {
+    async verifyCredential(username: string, password: string): Promise<MessageResponse> {
+        let result: MessageResponse = {
+            code: 200,
             success: false,
             message: 'Error al validar la sesión',
-            token: "",
         }
         try {
-            result.success = true;
-            result.message = "Session iniciada";
+
+            let salt = 'f844b09ff50c';            
+            const passVerify = crypto.pbkdf2Sync(password, salt,  
+                1000, 64, `sha512`).toString(`hex`);
+            const verify= await findCredenciales(username,passVerify);
+            result.success = verify !=null;
+            result.message = result.success? "Sesión iniciada":"El usuario o contraseña es inválido";
+            if(result.success){
+                result.data= verify;
+            }
         } catch (error:any) {
             console.error(error)
             if(error.response && error.response.status && error.response.status==401){

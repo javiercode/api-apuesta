@@ -4,6 +4,8 @@ import cors from 'cors';
 
 import loginRoutes from './routes/login.routes'
 import turnoRoutes from './routes/turno.routes'
+import userRoutes from './routes/user.routes'
+import rolusuarioRoutes from './routes/roluser.routes'
 import asignacionRoute from './routes/asignacion.routes'
 
 import Helmet from 'helmet';
@@ -14,7 +16,7 @@ const limiter = rateLimit({
 	windowMs: 10 * 60 * 1000, // 15 minutes
 	// max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	// windowMs: 10000, // 15 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	max: 150, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	// standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	// legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 	message:'Cantidad de solicitudes exedio la capacidad por el tiempo.'
@@ -43,10 +45,10 @@ app.use((err:any, req:any, res:any, next:any) => {
 
 app.use(Helmet());
 app.use(limiter);
-app.use(TokenMiddleware)
+app.use(TokenMiddleware);
 
-app.use('/webhook-bg/api/v1',loginRoutes);
-app.use('/webhook-bg/api/v1',turnoRoutes);
-app.use('/webhook-bg/api/v1',asignacionRoute);
+app.use(process.env.URL_PATH+"",loginRoutes);
+app.use(process.env.URL_PATH+"",userRoutes);
+app.use(process.env.URL_PATH+"",rolusuarioRoutes);
 
 export default app;

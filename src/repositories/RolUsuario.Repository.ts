@@ -1,12 +1,12 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import { RolUsuario } from "../entities/mongo/RolUsuario";
-import { createUserDto,userDtoParcial } from "../entities/dto/UserDto"
+import { createRolUserDto,rolUserDtoParcial } from "../entities/dto/RolUserDto"
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 
 const userRepository = MongoDataSource.getRepository(RolUsuario);
 
-export async function findByDto (params: createUserDto): Promise<ListPaginate |null>{
+export async function findByDto (params: createRolUserDto): Promise<ListPaginate |null>{
     let options={}
     options={...params}
     const [result,total] = await userRepository.findAndCount(options);
@@ -34,7 +34,7 @@ export async function desactivar (userId: number){
     return firstUser;
 };
  
-export async function actualizar (userId:number, param: createUserDto){    
+export async function actualizar (userId:number, param: createRolUserDto){    
 // export async function actualizar (userId:number, param: createUserDto): Promise<UpdateResult>{
     let options={}
     options={userId}

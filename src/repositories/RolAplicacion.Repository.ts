@@ -1,6 +1,6 @@
 import { DeleteResult, EntityRepository, In, Repository, UpdateResult } from "typeorm";
 import { RolAplicacion } from "../entities/mongo/RolAplicacion";
-import { createUserDto } from "../entities/dto/UserDto"
+import { createRolUserDto } from "../entities/dto/RolUserDto"
 import { MongoDataSource } from "../configs/db";
 
 const userRepository = MongoDataSource.getRepository(RolAplicacion);

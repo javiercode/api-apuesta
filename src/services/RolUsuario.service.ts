@@ -1,7 +1,7 @@
-import { IUsuario } from './interfaces/IUsuario.interface';
+import { IUsuario } from './interfaces/IRolUsuario.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { createUserDto } from '../entities/dto/UserDto';
+import { createRolUserDto } from '../entities/dto/RolUserDto';
 import { RolUsuario } from '../entities/mongo/RolUsuario';
 import { findByDto, deleteUser, findById, actualizar, existeUsuario, listAll, listBySucursales,desactivar } from '../repositories/RolUsuario.Repository';
 import { findById as findIdRol, findByINId } from '../repositories/RolAplicacion.Repository';
@@ -90,7 +90,7 @@ class UsersService implements IUsuario {
 
     }
 
-    async edit(id: number, userDto: createUserDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: number, userDto: createRolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const rolUsuario = new RolUsuario();
@@ -116,7 +116,7 @@ class UsersService implements IUsuario {
         return res;
     }
 
-    async create(userDto: createUserDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(userDto: createRolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const rolUsuario = new RolUsuario();

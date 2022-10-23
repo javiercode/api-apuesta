@@ -46,7 +46,7 @@ export function validateParams(value: string,type:string): MessageResponse {
                 regex = new RegExp("^[0-9]{1,4}$");
             break;
             case TypeKeyParamEnum.USER:
-                regex = new RegExp("^[a-zA-Z0-9]{1,4}$");
+                regex = new RegExp("^[a-zA-Z0-9]{3,30}$");
             break;
             case TypeKeyParamEnum.PARAM_BUSQUEDA:
                 regex = new RegExp("^[a-zA-Z0-9 ñÑ]{1,150}$");

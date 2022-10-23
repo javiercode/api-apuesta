@@ -1,28 +1,28 @@
-export interface createUserDto {
+export interface createRolUserDto {
     codRolAplicacion: string,
     usuario: string,
     sucursal: number
 }
 
-export interface userDtoParcial {
+export interface rolUserDtoParcial {
     usuario: string,
     codRolAplicacion: string
 }
 
-export interface editUser {
+export interface editRolUser {
     id: number,
     idRol: number,
     usuario: string,
     sucursal: number
 }
 
-export interface createUserDto {
+export interface createRolUserDto {
     codRolAplicacion: string,
     usuario: string,
     sucursal: number
 }
 
-export interface createUserForm {
+export interface createRolUserForm {
     codRolAplicacion: string,
     usuario: string,
     sucursal: string
@@ -30,14 +30,27 @@ export interface createUserForm {
 
 export interface UserDto {
     username:string,
+    name:string,
     correo:string,
     password:string
     codFacebook?:string,
     estado?:string,
 }
 
-export const createUserRegex: createUserForm = {
-    codRolAplicacion: "^[0-9]{1,2}$",
-    usuario: "^[a-zA-Z0-9]{3,4}$",
-    sucursal: "^[0-9]{1,3}$",
-  };
+export interface UserEditDto {
+    username:string,
+    name:string,
+    correo:string,
+    password:string
+    codFacebook?:string,
+    estado?:string,
+    fechaModificacion?:Date,
+}
+
+export const UserRegex: UserDto = {
+    username:"^[a-zA-Z0-9]{3,30}$",
+    name:"^[a-zA-ZÀ-ÿ ]{3,30}$",
+    correo:"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+    password:"^[\\w\\W\\d\\D\\t\\n]{6,30}$",
+    codFacebook:"^[\\w\\W\\d\\D\\t\\n]{0,30}$"
+};

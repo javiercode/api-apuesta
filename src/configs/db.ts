@@ -1,6 +1,7 @@
 import { DataSource,createConnections } from "typeorm";
 import { Cliente } from "../entities/mongo/Cliente";
 import { Tarea } from "../entities/mongo/Tarea";
+import { User } from "../entities/mongo/User";
 import { RolUsuario } from "../entities/mongo/RolUsuario";
 import { RolAplicacion } from "../entities/mongo/RolAplicacion";
 import { Movimiento } from "../entities/mongo/Movimiento";
@@ -18,7 +19,7 @@ export const MongoDataSource = new DataSource({
     logging: false,
     entities: [
         // "src/entities/mongo/*.ts"
-        RolUsuario,RolAplicacion,Cliente,Tarea,Imagen,Movimiento,Jornada,Turno,Asignacion
+        User,RolUsuario,RolAplicacion,Cliente,Tarea,Imagen,Movimiento,Jornada,Turno,Asignacion
     ],
     subscribers: [
         // "src/subscriber/*.js"

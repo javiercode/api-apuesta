@@ -1,10 +1,9 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
 import { ObjectID } from 'mongodb';
-import { AsignacionDto } from '../dto/AsignacionDto';
 import { UserDto } from '../dto/UserDto';
 
 @Entity('User')
-export class Asignacion{
+export class User{
     
     @ObjectIdColumn()
     public id: ObjectID;
@@ -12,6 +11,9 @@ export class Asignacion{
     @Column()
     @Index({ unique: true })
     username:string
+
+    @Column()
+    name:string
 
     @Column()
     correo:string
@@ -34,6 +36,7 @@ export class Asignacion{
     constructor(params: UserDto = {} as UserDto){
         this.username=params.username;
         this.correo=params.correo;
+        this.name=params.name;
         this.password=params.password;
         this.codFacebook=params.codFacebook || "";
         this.estado = params.estado || 'A';
