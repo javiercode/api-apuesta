@@ -27,9 +27,11 @@ La clase principal se compila en base al archivo principal y se puede ejecutar c
     ]
 }
 
-ejemplo de variables env:
+```
 
-```.env
+
+Ejemplo de variables env:
+```
 NODE_ENV=development
 
 ##########################    SERVICE   ##########################
