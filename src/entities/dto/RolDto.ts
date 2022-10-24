@@ -1,11 +1,11 @@
-export interface RolAplicacionDto {
+export interface RolDto {
     codigo:string,
     descripcion:string,
     jerarquia:number,
     usuarioRegistro?: string,
     sucursalRegistro?: number,
 }
-export interface RolAplicacionEditDto {
+export interface RolEditDto {
     codigo:string,
     descripcion:string,
     jerarquia:number,

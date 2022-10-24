@@ -1,6 +1,6 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn,OneToOne,OneToMany} from 'typeorm';
 import { ObjectID } from 'mongodb';
-import { RolUsuarioDto } from '../dto/RolUsuarioDto';
+import { RolUsuarioDto } from './dto/RolUsuarioDto';
 
 @Entity('RolUsuario')
 export class RolUsuario {

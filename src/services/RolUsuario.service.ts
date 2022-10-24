@@ -2,10 +2,8 @@ import { IUsuario } from './interfaces/IRolUsuario.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { createRolUserDto } from '../entities/dto/RolUserDto';
-import { RolUsuario } from '../entities/mongo/RolUsuario';
-import { findByDto, deleteUser, findById, actualizar, existeUsuario, listAll, listBySucursales,desactivar } from '../repositories/RolUsuario.Repository';
-import { findById as findIdRol, findByINId } from '../repositories/RolAplicacion.Repository';
-import { findAllRoles } from '../repositories/RolAplicacion.Repository';
+import { RolUsuario } from '../entities/RolUsuario';
+import RolUserRepository from '../repositories/RolUsuario.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { esAdmin, esOficial, esJefe, esGerente, controlPermisos } from '../configs/TokenMiddleware';
 import { RolesTypeEnum } from '../configs/Config.enum';
@@ -17,23 +15,6 @@ class UsersService implements IUsuario {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
         // const result = await this.controlJerarquia(4, authSession);
         // const result2 = await this.controlJurisdiccion(101, authSession);
-        return res;
-    }
-
-    async listRoles(): Promise<MessageResponse> {
-        const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
-        try {
-            const query = await findAllRoles()
-            res.data = query;
-            res.success = true;
-            res.message = "Obtención exitosa";
-            res.total = query?.length || 0;
-        } catch (error) {
-            // if (error instanceof TypeError) {
-            console.error(error);
-            // }
-        }
-
         return res;
     }
 
@@ -58,10 +39,10 @@ class UsersService implements IUsuario {
         try {
             let query;
             if (esAdmin(authSession)) {
-                query = await listAll(limit, page);
+                query = await RolUserRepository.listAll(limit, page);
             } else {
                 const strSucursal = authSession.aSucursal.join(",");
-                query = await listBySucursales(limit, page, strSucursal);
+                query = await RolUserRepository.listBySucursales(limit, page, strSucursal);
             }
             res.data = query.data;
             res.success = true;
@@ -97,13 +78,13 @@ class UsersService implements IUsuario {
             rolUsuario.usuario = userDto.usuario;
             rolUsuario.codRolAplicacion = userDto.codRolAplicacion;
             rolUsuario.sucursal = userDto.sucursal;
-            const userDtoFind = await findById(id);
+            const userDtoFind = await RolUserRepository.findById(id);
 
             const permisos = await controlPermisos(userDto.sucursal, userDto.codRolAplicacion, authSession);
             if (userDtoFind && permisos.success) {
                 res.success = true;
                 res.message = "rol actualizado!";
-                await actualizar(id, userDto);
+                await RolUserRepository.actualizar(id, userDto);
                 res.data = userDto;
             } else {
                 res.message = permisos.success? "Rol no encontrado": permisos.message;
@@ -124,7 +105,7 @@ class UsersService implements IUsuario {
             rolUsuario.codRolAplicacion = userDto.codRolAplicacion;
             rolUsuario.sucursal = userDto.sucursal;
 
-                const existeUser = await existeUsuario(userDto.usuario);
+                const existeUser = await RolUserRepository.existeUsuario(userDto.usuario);
                 const permisos = await controlPermisos(userDto.sucursal, userDto.codRolAplicacion, authSession);
                 if (existeUser && permisos.success) {
                     res.success = true;
@@ -145,13 +126,13 @@ class UsersService implements IUsuario {
     async desactivarUser(idUser: number, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
-            const userDtoFind = await findById(idUser);
+            const userDtoFind = await RolUserRepository.findById(idUser);
             if (userDtoFind) {
                 const permisos = await controlPermisos(userDtoFind.sucursal, userDtoFind.codRolAplicacion, authSession);
                 if(permisos.success){
                     res.success = true;
                     res.message = "rol eliminado";
-                    await desactivar(idUser);
+                    await RolUserRepository.desactivar(idUser);
                 }else{
                     res.message = permisos.message;
                 }

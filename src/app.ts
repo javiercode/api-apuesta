@@ -3,10 +3,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import loginRoutes from './routes/login.routes'
-import turnoRoutes from './routes/turno.routes'
 import userRoutes from './routes/user.routes'
 import rolusuarioRoutes from './routes/roluser.routes'
-import asignacionRoute from './routes/asignacion.routes'
 
 import Helmet from 'helmet';
 import rateLimit from 'express-rate-limit'

@@ -1,6 +1,6 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
 import { ObjectID } from 'mongodb';
-import { UserDto } from '../dto/UserDto';
+import { UserDto } from './dto/UserDto';
 
 @Entity('User')
 export class User{

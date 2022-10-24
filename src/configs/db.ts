@@ -1,15 +1,4 @@
 import { DataSource,createConnections } from "typeorm";
-import { Cliente } from "../entities/mongo/Cliente";
-import { Tarea } from "../entities/mongo/Tarea";
-import { User } from "../entities/mongo/User";
-import { RolUsuario } from "../entities/mongo/RolUsuario";
-import { RolAplicacion } from "../entities/mongo/RolAplicacion";
-import { Movimiento } from "../entities/mongo/Movimiento";
-import { Imagen } from "../entities/mongo/Imagen";
-import { Jornada } from "../entities/mongo/Jornada";
-import { Turno } from "../entities/mongo/Turno";
-import { Asignacion } from "../entities/mongo/Asignacion";
-
 
 export const MongoDataSource = new DataSource({
     type: "mongodb",
@@ -18,8 +7,8 @@ export const MongoDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [
-        // "src/entities/mongo/*.ts"
-        User,RolUsuario,RolAplicacion,Cliente,Tarea,Imagen,Movimiento,Jornada,Turno,Asignacion
+        "./src/entities/*.ts"
+        // User,RolUsuario,RolAplicacion,Cliente,Tarea,Imagen,Movimiento,Jornada,Turno,Asignacion
     ],
     subscribers: [
         // "src/subscriber/*.js"

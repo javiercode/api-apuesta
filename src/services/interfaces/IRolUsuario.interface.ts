@@ -6,6 +6,5 @@ export interface IUsuario {
     listSucursales: (limit: number, page: number) => Promise<any>;
     getUsuario: (usuario:string) => Promise<any>;
     create: (userDto: any,authSession:any) => Promise<any>;
-    listRoles: () => Promise<any>;
     edit: (id:number,userDto: any,authSession:any)=> Promise<MessageResponse>;
 }

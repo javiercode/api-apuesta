@@ -2,7 +2,7 @@ export interface JwtPayload {
     clave: string,
     name: string,
     rol: string[],
-    rolId: number[],
+    aRolId: string[],
     aSucursal: number[],
     sucursal: number,
     departamento: number,

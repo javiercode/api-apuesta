@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev2": "ts-node-dev  -- dotenv/config --respawn src/index.ts",
     "dev": "ts-node-dev  --respawn src/index.ts",
     "build": "tsc",
     "start": "node build/index.js"

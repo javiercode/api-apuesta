@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { decode } from 'punycode';
 import { JwtPayload, MessageResponse } from '../entities/dto/GeneralDto';
-import { RolesType, RolesTypeEnum } from '../configs/Config.enum';
+import { RolesTypeEnum } from '../configs/Config.enum';
+import RolRepository from '../repositories/Rol.Repository';
 import jwt from 'jsonwebtoken';
-import { findByINId, findById } from '../repositories/RolAplicacion.Repository';
 
 export const TokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.get('Authorization');
@@ -16,7 +16,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
             const decodeToken = getAuthUser(req)
 
             if (token && decodeToken.activo) {
-                res = encodeToken(res, decodeToken.clave, decodeToken.name, decodeToken.rol, decodeToken.rolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.departamento);
+                res = encodeToken(res, decodeToken.clave, decodeToken.name, decodeToken.rol, decodeToken.aRolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.departamento);
                 next()
             } else {
                 res.sendStatus(401);
@@ -28,12 +28,12 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
 
 }
 
-export const encodeToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: number[], aSucursal: number[], sucursal: number, departamento: number) => {
+export const encodeToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
     const userForToken: JwtPayload = {
         clave: usuario,
         name: nombre,
         rol: rol,
-        rolId: rolId,
+        aRolId: rolId,
         aSucursal: aSucursal,
         sucursal: sucursal,
         departamento: departamento,
@@ -52,12 +52,12 @@ export const encodeToken = (res: Response, usuario: string, nombre: string, rol:
     return res;
 }
 
-export const getToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: number[], aSucursal: number[], sucursal: number, departamento: number) => {
+export const getToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
     const userForToken: JwtPayload = {
         clave: usuario,
         name: nombre,
         rol: rol,
-        rolId: rolId,
+        aRolId: rolId,
         aSucursal: aSucursal,
         sucursal: sucursal,
         departamento: departamento,
@@ -79,7 +79,7 @@ export const getAuthUser = (req: Request) => {
         clave: "",
         name: "",
         rol: [],
-        rolId: [],
+        aRolId: [],
         aSucursal: [],
         sucursal: 0,
         departamento: 0,
@@ -104,19 +104,19 @@ export const esOficial = (auth: JwtPayload) => {
 
 export const esAdmin = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesType.ADMIN))
+    const rolFind = aRol.find(element => (element === RolesTypeEnum.ADMIN))
     return rolFind !== undefined;
 }
 
 export const esJefe = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesType.JEFE))
+    const rolFind = aRol.find(element => (element === RolesTypeEnum.JEFE))
     return rolFind !== undefined;
 }
 
 export const esGerente = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesType.GERENTE))
+    const rolFind = aRol.find(element => (element === RolesTypeEnum.GERENTE))
     return rolFind !== undefined;
 }
 
@@ -141,16 +141,17 @@ export async function controlJurisdiccion(sucursal: number, authSession: JwtPayl
 // 4,GER
 // 3,JEF
 // 2,OFI
+
 export const controlJerarquia = async (rol: string, authSession: JwtPayload): Promise<MessageResponse> => {
     const res: MessageResponse = { success: false, message: "El usuario no tiene los permisos para proceder", code: 0 };
-    const result = await findById(rol);
+    const result = await RolRepository.findById(rol);
     try {
         if (result) {
             if (esAdmin(authSession)) {
                 res.success = true;
                 res.message = "El usuario tiene los permisos para proceder"
             } else {
-                const resultSession = await findByINId(authSession.rolId);
+                const resultSession = await RolRepository.findByINId(authSession.aRolId);
                 const conJerarquia = resultSession.filter(rolAplicacion => rolAplicacion.jerarquia < result.jerarquia)            
                 if (conJerarquia.length==0) {
                     res.success = false

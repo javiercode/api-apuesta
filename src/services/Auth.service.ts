@@ -4,10 +4,9 @@ import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
 import UsersService from './RolUsuario.service';
-import axios from "axios";
 import https from 'https';
 import * as crypto from "crypto";
-import { findCredenciales } from '../repositories/User.Repository';
+import UserRepository from '../repositories/User.Repository';
 
 
 class AuthService implements IAuth {
@@ -60,7 +59,7 @@ class AuthService implements IAuth {
             let salt = 'f844b09ff50c';            
             const passVerify = crypto.pbkdf2Sync(password, salt,  
                 1000, 64, `sha512`).toString(`hex`);
-            const verify= await findCredenciales(username,passVerify);
+            const verify= await UserRepository.findCredenciales(username,passVerify);
             result.success = verify !=null;
             result.message = result.success? "Sesión iniciada":"El usuario o contraseña es inválido";
             if(result.success){
