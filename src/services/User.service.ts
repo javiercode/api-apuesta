@@ -53,25 +53,34 @@ class UserService implements IUser {
 
     async create(userDto: UserDto): Promise<MessageResponse> {
         const res:MessageResponse={success:false, message:"Error de registro", code:0};
-        //try {
+        try {
             const oUser = new User(userDto);
             oUser.fechaRegistro = getFecha(new Date())
             res.success = true;
-            res.message = "Turno registrado";
+            res.message = "Rol registrado";
 
-            let salt = 'f844b09ff50c'
-            let hash = crypto.pbkdf2Sync(userDto.password, salt,  
-                1000, 64, `sha512`).toString(`hex`);
-            oUser.password =hash;
+            // let salt = 'f844b09ff50c'
+            // let hash = crypto.pbkdf2Sync(userDto.password, salt,  
+            //     1000, 64, `sha512`).toString(`hex`);
+            // oUser.password =hash;
+            oUser.password = this.encrypt(userDto.password);
 
             const oRolUsuario = await MongoDataSource.manager.save(oUser);
             res.data = oRolUsuario;
-        /*} catch (error) {
+        } catch (error) {
             if (error instanceof TypeError) {
                 console.error(error);
             }
-        }*/
+        }
         return res;
+    }
+
+    encrypt(password: string):string{
+        let salt = 'f844b09ff50c'
+        let hash = crypto.pbkdf2Sync(password, salt,  
+            1000, 64, `sha512`).toString(`hex`);
+
+        return hash;
     }
     
 

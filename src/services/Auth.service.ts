@@ -4,7 +4,6 @@ import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
 import UsersService from './RolUsuario.service';
-import https from 'https';
 import * as crypto from "crypto";
 import UserRepository from '../repositories/User.Repository';
 
