@@ -68,9 +68,9 @@ class UserService implements IUser {
             const oRolUsuario = await MongoDataSource.manager.save(oUser);
             res.data = oRolUsuario;
         } catch (error) {
-            if (error instanceof TypeError) {
+            // if (error instanceof TypeError) {
                 console.error(error);
-            }
+            // }
         }
         return res;
     }
