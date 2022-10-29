@@ -1,35 +1,21 @@
-export interface createRolUserDto {
-    codRolAplicacion: string,
-    usuario: string,
-    sucursal: number
+export interface RolUsuarioDto {
+    codRol:string,
+    codUsuario:string,
+    usuarioRegistro?: string,
 }
-
-export interface rolUserDtoParcial {
-    usuario: string,
-    codRolAplicacion: string
-}
-
-export interface editRolUser {
-    id: number,
-    idRol: number,
-    usuario: string,
-    sucursal: number
-}
-
-export interface createRolUserDto {
-    codRolAplicacion: string,
-    usuario: string,
-    sucursal: number
+export interface RolUsuarioEditDto {
+    codRol:string,
+    codUsuario:string,
+    usurioModificacion?:string
+    fechaModificacion?:Date 
 }
 
 export interface createRolUserForm {
-    codRolAplicacion: string,
-    usuario: string,
-    sucursal: string
+    codRol:string,
+    codUsuario:string,
 }
 
-export const RolUserRegex: createRolUserForm = {
-    codRolAplicacion: "^[0-9]{1,2}$",
-    usuario: "^[a-zA-Z0-9]{3,4}$",
-    sucursal: "^[0-9]{1,3}$",
+export const RolUserRegex: RolUsuarioDto = {
+    codRol: "^[a-fA-F0-9]{20,50}$",
+    codUsuario: "^[a-fA-F0-9]{20,50}$",
 };

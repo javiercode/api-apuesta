@@ -119,9 +119,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
-# requests
-.request/
-request/
-.request/*
-request/*
+# vscode
+.vscode/

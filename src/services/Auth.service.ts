@@ -3,7 +3,7 @@ import { IAuth } from './interfaces/IAuth.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
-import UsersService from './RolUsuario.service';
+import UsersService from './User.service';
 import * as crypto from "crypto";
 import UserRepository from '../repositories/User.Repository';
 
@@ -55,9 +55,10 @@ class AuthService implements IAuth {
         }
         try {
 
-            let salt = 'f844b09ff50c';            
-            const passVerify = crypto.pbkdf2Sync(password, salt,  
-                1000, 64, `sha512`).toString(`hex`);
+            /*let salt = 'f844b09ff50c';            
+            let passVerify = crypto.pbkdf2Sync(password, salt,  
+                1000, 64, `sha512`).toString(`hex`);*/
+            const passVerify = this.encrypt(password);
             const verify= await UserRepository.findCredenciales(username,passVerify);
             result.success = verify !=null;
             result.message = result.success? "Sesión iniciada":"El usuario o contraseña es inválido";
@@ -72,6 +73,13 @@ class AuthService implements IAuth {
             }
         }        
         return result;
+    }
+
+    encrypt(password: string): string {
+        let salt = process.env.PASS_SALT + "";
+        let hash = crypto.pbkdf2Sync(password, salt,
+            1000, 64, `sha512`).toString(`hex`);
+        return hash;
     }
 }
 

@@ -1,17 +1,18 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import { RolUsuario } from "../entities/RolUsuario";
-import { createRolUserDto,rolUserDtoParcial } from "../entities/dto/RolUserDto"
+import { RolUsuarioDto } from "../entities/dto/RolUserDto"
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { Rol } from "../entities/Rol";
 import { RolDto } from "../entities/dto/RolDto";
+import { ObjectID } from "mongodb";
 
 
 class RolRepository {
     private repository = MongoDataSource.getRepository(Rol);
 
-    public async  findByDto (params: createRolUserDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: RolUsuarioDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -24,7 +25,12 @@ class RolRepository {
 
     public async  findById (params: string): Promise<Rol | null>{    
         let options={}
-        options={params}
+        options = {
+            where: {
+                _id: new ObjectID(params)
+            },
+        };
+        
         const result = await this.repository.findOne(options);
         
         return result
@@ -66,6 +72,11 @@ class RolRepository {
             data: result,
             count: total
         }
+    };
+
+    public async save(params: Rol): Promise<Rol> {
+        const oRol = await this.repository.save(params);
+        return oRol;
     };
 
 }

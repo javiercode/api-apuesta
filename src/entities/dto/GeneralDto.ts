@@ -1,5 +1,5 @@
 export interface JwtPayload {
-    clave: string,
+    username: string,
     name: string,
     rol: string[],
     aRolId: string[],

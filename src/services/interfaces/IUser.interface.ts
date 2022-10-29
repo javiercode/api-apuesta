@@ -5,4 +5,5 @@ export interface IUser {
     create: (userDto: any) => Promise<any>;
     edit: (id:string,userDto: any)=> Promise<MessageResponse>;
     desactivar: (id:string)=> Promise<MessageResponse>;
+    getUsuario: (usuario: string)=> Promise<string>;
 }

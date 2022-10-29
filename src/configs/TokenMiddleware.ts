@@ -16,7 +16,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
             const decodeToken = getAuthUser(req)
 
             if (token && decodeToken.activo) {
-                res = encodeToken(res, decodeToken.clave, decodeToken.name, decodeToken.rol, decodeToken.aRolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.departamento);
+                res = encodeToken(res, decodeToken.username, decodeToken.name, decodeToken.rol, decodeToken.aRolId, decodeToken.aSucursal, decodeToken.sucursal, decodeToken.departamento);
                 next()
             } else {
                 res.sendStatus(401);
@@ -30,7 +30,7 @@ export const TokenMiddleware = (req: Request, res: Response, next: NextFunction)
 
 export const encodeToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
     const userForToken: JwtPayload = {
-        clave: usuario,
+        username: usuario,
         name: nombre,
         rol: rol,
         aRolId: rolId,
@@ -54,7 +54,7 @@ export const encodeToken = (res: Response, usuario: string, nombre: string, rol:
 
 export const getToken = (res: Response, usuario: string, nombre: string, rol: string[], rolId: string[], aSucursal: number[], sucursal: number, departamento: number) => {
     const userForToken: JwtPayload = {
-        clave: usuario,
+        username: usuario,
         name: nombre,
         rol: rol,
         aRolId: rolId,
@@ -76,7 +76,7 @@ export const getToken = (res: Response, usuario: string, nombre: string, rol: st
 
 export const getAuthUser = (req: Request) => {
     let auth = {
-        clave: "",
+        username: "",
         name: "",
         rol: [],
         aRolId: [],

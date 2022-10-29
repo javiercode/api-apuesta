@@ -1,7 +1,7 @@
-import { IUsuario } from './interfaces/IRolUsuario.interface';
+import { IRolUsuario } from './interfaces/IRolUsuario.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { createRolUserDto } from '../entities/dto/RolUserDto';
+import { RolUsuarioDto } from '../entities/dto/RolUserDto';
 import { RolUsuario } from '../entities/RolUsuario';
 import RolUserRepository from '../repositories/RolUsuario.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
@@ -9,7 +9,7 @@ import { esAdmin, esOficial, esJefe, esGerente, controlPermisos } from '../confi
 import { RolesTypeEnum } from '../configs/Config.enum';
 
 
-class UsersService implements IUsuario {
+class RolUsuarioService implements IRolUsuario {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
@@ -18,7 +18,7 @@ class UsersService implements IUsuario {
         return res;
     }
 
-    async listSucursales(limit: number, page: number): Promise<MessageResponse> {
+    async list(limit: number, page: number): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
             res.data = [];
@@ -34,60 +34,20 @@ class UsersService implements IUsuario {
         return res;
     }
 
-    async list(limit: number, page: number, authSession: JwtPayload): Promise<MessageResponse> {
-        const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
-        try {
-            let query;
-            if (esAdmin(authSession)) {
-                query = await RolUserRepository.listAll(limit, page);
-            } else {
-                const strSucursal = authSession.aSucursal.join(",");
-                query = await RolUserRepository.listBySucursales(limit, page, strSucursal);
-            }
-            res.data = query.data;
-            res.success = true;
-            res.message = "Obtención exitosa";
-            res.total = query.count || 0;
-        } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
-            }
-        }
-
-        return res;
-    }
-
-    async getUsuario(usuario: string) {
-        try {
-            const query = usuario;
-            //`,["GSV"]);
-            return query;
-        } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
-            }
-            return []
-        }
-
-    }
-
-    async edit(id: number, userDto: createRolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, rolUserDto: RolUsuarioDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const rolUsuario = new RolUsuario();
-            rolUsuario.usuario = userDto.usuario;
-            rolUsuario.codRolAplicacion = userDto.codRolAplicacion;
-            rolUsuario.sucursal = userDto.sucursal;
+            const rolUsuario = new RolUsuario(rolUserDto);
             const userDtoFind = await RolUserRepository.findById(id);
 
-            const permisos = await controlPermisos(userDto.sucursal, userDto.codRolAplicacion, authSession);
-            if (userDtoFind && permisos.success) {
+            //const permisos = await controlPermisos(rolUserDto.sucursal, rolUserDto.codRolAplicacion, authSession);
+            if (userDtoFind) {
                 res.success = true;
                 res.message = "rol actualizado!";
-                await RolUserRepository.actualizar(id, userDto);
-                res.data = userDto;
+                await RolUserRepository.actualizar(id, rolUserDto);
+                res.data = rolUserDto;
             } else {
-                res.message = permisos.success? "Rol no encontrado": permisos.message;
+                res.message =  "Rol no encontrado";
             }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -97,23 +57,21 @@ class UsersService implements IUsuario {
         return res;
     }
 
-    async create(userDto: createRolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(rolUserDto: RolUsuarioDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const rolUsuario = new RolUsuario();
-            rolUsuario.usuario = userDto.usuario;
-            rolUsuario.codRolAplicacion = userDto.codRolAplicacion;
-            rolUsuario.sucursal = userDto.sucursal;
+            const rolUsuario = new RolUsuario(rolUserDto);
 
-                const existeUser = await RolUserRepository.existeUsuario(userDto.usuario);
-                const permisos = await controlPermisos(userDto.sucursal, userDto.codRolAplicacion, authSession);
-                if (existeUser && permisos.success) {
+                //const existeUser = await RolUserRepository.existeUsuario(rolUserDto.usuario);
+                //const permisos = await controlPermisos(rolUserDto.sucursal, rolUserDto.codRolAplicacion, authSession);
+                if (true) {
+                //if (existeUser ) {
                     res.success = true;
                     res.message = "Rol registrado";
                     const oRolUsuario = await MongoDataSource.manager.save(rolUsuario);
                     res.data = oRolUsuario;
                 } else {
-                    res.message = permisos.success ? "El usuario no existe, no pertence a banca Mype o esta inhabilitado!" : permisos.message
+                    res.message =  "El usuario no existe o esta inhabilitado!";
                 }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -123,20 +81,14 @@ class UsersService implements IUsuario {
         return res;
     }
 
-    async desactivarUser(idUser: number, authSession: JwtPayload): Promise<MessageResponse> {
+    async desactivarUser(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
             const userDtoFind = await RolUserRepository.findById(idUser);
             if (userDtoFind) {
-                const permisos = await controlPermisos(userDtoFind.sucursal, userDtoFind.codRolAplicacion, authSession);
-                if(permisos.success){
                     res.success = true;
                     res.message = "rol eliminado";
                     await RolUserRepository.desactivar(idUser);
-                }else{
-                    res.message = permisos.message;
-                }
-
             } else {
                 res.message = "rol no encontrado!";
             }
@@ -151,4 +103,4 @@ class UsersService implements IUsuario {
     
 }
 
-export default new UsersService();
+export default new RolUsuarioService();

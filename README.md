@@ -32,23 +32,22 @@ La clase principal se compila en base al archivo principal y se puede ejecutar c
 
 Ejemplo de variables env:
 ```
-NODE_ENV=development
+NODE_ENV=developtment
 
 ##########################    SERVICE   ##########################
 PORT=4000
-API_MIDDLEWARE=https://172.16.1.159:8443/topazinterpretedws/tokenbuilder
-PUBLIC_PATH_FILE=public/files
 URL_PATH=/apuesta/api/v1
-ELMINACION_ARCHIVOS_DIAS=90
 PETICIONES_TIEMPO=100
 
-
 ##########################    MONGODB   ##########################
+MONGO_DATABASE=apuesta
+#MONGO_URL=mongodb+srv://admin:ew1C967LQNaWc7iN@cluster0.xhicr.mongodb.net/webhook
 MONGO_URL=mongodb://localhost:27017
-MONGO_DATABASE=API_APUESTA
+
 
 ##########################    JWT   ##########################
 JWT_TOKEN_SECRET=f361aaa1177c444a9da7e59f0aca299e1cc33ebdfa245299222b1fa104e515085e427dc974aa8cc294c87f4b4f68ca6902dce5df5e48532f3997f3b6eb163f16
+PASS_SALT=secret
 #% EXPIRE=60*60*12
 JWT_TOKEN_EXPIRE=43200
 

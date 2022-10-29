@@ -27,6 +27,12 @@ export class Rol{
     @Column()
     fechaModificacion:Date
     
+    @Column()
+    usuarioRegistro:string
+
+    @Column()
+    usuarioModificacion:string
+    
     constructor(params: RolDto = {} as RolDto){
         this.codigo=params.codigo;
         this.descripcion=params.descripcion;

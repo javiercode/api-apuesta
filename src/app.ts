@@ -5,6 +5,7 @@ import cors from 'cors';
 import loginRoutes from './routes/login.routes'
 import userRoutes from './routes/user.routes'
 import rolusuarioRoutes from './routes/roluser.routes'
+import rolRoutes from './routes/rol.routes'
 
 import Helmet from 'helmet';
 import rateLimit from 'express-rate-limit'
@@ -46,6 +47,7 @@ app.use(limiter);
 app.use(TokenMiddleware);
 
 app.use(process.env.URL_PATH+"",loginRoutes);
+app.use(process.env.URL_PATH+"",rolRoutes);
 app.use(process.env.URL_PATH+"",userRoutes);
 app.use(process.env.URL_PATH+"",rolusuarioRoutes);
 

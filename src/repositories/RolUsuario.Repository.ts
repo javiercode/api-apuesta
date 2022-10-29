@@ -1,14 +1,15 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import { RolUsuario } from "../entities/RolUsuario";
-import { createRolUserDto,rolUserDtoParcial } from "../entities/dto/RolUserDto"
+import { RolUsuarioDto } from "../entities/dto/RolUserDto"
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
+import { ObjectID } from "mongodb";
 
 
 class RolUserRepository {
     private repository = MongoDataSource.getRepository(RolUsuario);
 
-    public async  findByDto (params: createRolUserDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: RolUsuarioDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -19,22 +20,26 @@ class RolUserRepository {
         }
     };
 
-    public async  findById (params: number): Promise<RolUsuario | null>{    
+    public async  findById (params: string): Promise<RolUsuario | null>{    
         let options={}
-        options={params}
+        options = {
+            where: {
+                _id: new ObjectID(params)
+            },
+        };
         const result = await this.repository.findOne(options);
         
         return result
     };
     
-    public async  desactivar (userId: number){       
+    public async  desactivar (userId: string){       
         let options={}
         options={userId}
         const firstUser = await this.repository.update(options,{estado:'A'});
         return firstUser;
     };
     
-    public async  actualizar (userId:number, param: createRolUserDto){
+    public async  actualizar (userId:string, param: RolUsuarioDto){
         let options={}
         options={userId}
         const firstUser = await this.repository.update(options,param);

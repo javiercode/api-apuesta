@@ -1,0 +1,46 @@
+@api = http://localhost:4000/apuesta/api/v1
+# @api = http://192.168.27.141:9091
+#@api = http://192.168.27.141:4000/micliente/api/v3
+
+### Login
+POST {{api}}/login
+Content-Type: application/json
+
+{
+    "username":"xaviercode",
+    "password":"123456"
+}
+
+
+### list Rol
+GET {{api}}/roluser/list/0/10
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY
+
+
+### Create Rol
+POST {{api}}/rol/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTUwMzIsImV4cCI6MTY2NzA1ODIzMn0.KuVCEqtgzN91ApneazCv5BPoqvTaNkUz9TUUW4C7SyA
+
+{
+    "codigo":"ADM",
+    "descripcion":"Administrador",
+    "jerarquia":1
+}
+### Edit Rol
+PUT {{api}}/rol/edit/635ca32b86063e346860dad4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY
+
+{
+    "codigo":"ADM",
+    "descripcion":"Administrador",
+    "jerarquia":1
+}
+
+
+### Delete Rol
+DELETE {{api}}/rol/delete/635ca32b86063e346860dad4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY
