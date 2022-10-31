@@ -1,6 +1,6 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import { RolUsuario } from "../entities/RolUsuario";
-import { RolUsuarioDto } from "../entities/dto/RolUserDto"
+import { RolUser } from "../entities/RolUser";
+import { RolUserDto } from "../entities/dto/RolUserDto"
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
@@ -12,7 +12,7 @@ import { ObjectID } from "mongodb";
 class RolRepository {
     private repository = MongoDataSource.getRepository(Rol);
 
-    public async  findByDto (params: RolUsuarioDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: RolUserDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -58,7 +58,7 @@ class RolRepository {
         return firstUser;
     };
     
-    public async  delete (params: RolUsuario): Promise<DeleteResult>{
+    public async  delete (params: RolUser): Promise<DeleteResult>{
         let options={}
         options={params}
         const firstUser = await this.repository.delete(options);
@@ -67,7 +67,13 @@ class RolRepository {
 
 
     public async  listAll (): Promise<ListPaginate>{
-        const [result,total] = await this.repository.findAndCount();        
+        let options={}
+        options={
+            where:{
+                estado:EstadoEnum.ACTIVO,
+            }
+        }
+        const [result,total] = await this.repository.findAndCount(options);        
         return {
             data: result,
             count: total

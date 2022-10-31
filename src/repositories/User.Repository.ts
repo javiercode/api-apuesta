@@ -1,8 +1,9 @@
 import { DeleteResult, EntityRepository,  Like,  ObjectID,  UpdateResult, InsertResult, SaveOptions } from "typeorm";
 import { User } from "../entities/User";
-import { UserDto, UserEditDto  } from "../entities/dto/UserDto"
+import { UserDto, UserEditDto, UserEditPassDto  } from "../entities/dto/UserDto"
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { MongoDataSource } from "../configs/db";
+import { EstadoEnum } from "../configs/Config.enum";
 
 class UserRepository{
     private repository = MongoDataSource.getRepository(User);
@@ -28,7 +29,7 @@ class UserRepository{
         const take = limit ||10;
         const skip = page ||0;
         const [result, total] = await this.repository.findAndCount({
-            where: { estado: 'A' },
+            where: { estado: EstadoEnum.ACTIVO },
             take:take,
             skip:(skip * take),
             order: {
@@ -41,6 +42,20 @@ class UserRepository{
         }
     };
 
+    public async findByIdActive(params: string): Promise<User | null> {
+    // public async findByIdActive(params: string): Promise<User[]> {
+        let options={}
+        options = {
+            where: {
+                // _id: new ObjectID(params),
+                _id: params,
+                estado: EstadoEnum.ACTIVO
+            },
+        };
+        const firstUser = await this.repository.findOne(options);
+        return firstUser;
+    };
+
     public async findById(params: string): Promise<User | null> {
         const firstUser = await this.repository.findOneById(params);
         return firstUser;
@@ -51,7 +66,7 @@ class UserRepository{
         return firstUser;
     };
 
-    public async actualizar(userId: string, param: UserEditDto): Promise<UpdateResult> {
+    public async actualizar(userId: string, param: UserEditDto|UserEditPassDto): Promise<UpdateResult> {
         const firstUser = await this.repository.update(userId, param);
         return firstUser;
     };

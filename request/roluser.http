@@ -12,24 +12,24 @@ Content-Type: application/json
 }
 
 
-### list Rol
+### list RolUser
 GET {{api}}/roluser/list/0/10
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY
 
 
-### Create Rol
-POST {{api}}/rol/create
+### Create RolUser
+POST {{api}}/roluser/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTUwMzIsImV4cCI6MTY2NzA1ODIzMn0.KuVCEqtgzN91ApneazCv5BPoqvTaNkUz9TUUW4C7SyA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcxNzI0ODIsImV4cCI6MTY2NzIxNTY4Mn0.dDNMnh_FiR8bRt3GTZGovYKoE_yKYV7v4dyzQ8dVPwo
 
 {
-    "codigo":"ADM",
-    "descripcion":"Administrador",
-    "jerarquia":1
+    "codRol":"635f010f407de841b45b8eb8",
+    "codUsuario":"635efff6407de841b45b8eb7"
 }
-### Edit Rol
-PUT {{api}}/rol/edit/635ca32b86063e346860dad4
+
+### Edit RolUser
+PUT {{api}}/roluser/edit/635ca32b86063e346860dad4
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY
 
@@ -41,6 +41,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inhhd
 
 
 ### Delete Rol
-DELETE {{api}}/rol/delete/635ca32b86063e346860dad4
+DELETE {{api}}/roluser/delete/635ca32b86063e346860dad4
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcwMTU3OTcsImV4cCI6MTY2NzA1ODk5N30.RXzjAErM6CY9RDZBztvk89C-GExQpllLDRMGKLC-4UY

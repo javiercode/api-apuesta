@@ -1,15 +1,15 @@
-import { IRolUsuario } from './interfaces/IRolUsuario.interface';
+import { IRolUser } from './interfaces/IRolUser.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { RolUsuarioDto } from '../entities/dto/RolUserDto';
-import { RolUsuario } from '../entities/RolUsuario';
-import RolUserRepository from '../repositories/RolUsuario.Repository';
+import { RolUserDto } from '../entities/dto/RolUserDto';
+import { RolUser } from '../entities/RolUser';
+import RolUserRepository from '../repositories/RolUser.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { esAdmin, esOficial, esJefe, esGerente, controlPermisos } from '../configs/TokenMiddleware';
 import { RolesTypeEnum } from '../configs/Config.enum';
 
 
-class RolUsuarioService implements IRolUsuario {
+class RolUserService implements IRolUser {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
@@ -34,10 +34,10 @@ class RolUsuarioService implements IRolUsuario {
         return res;
     }
 
-    async edit(id: string, rolUserDto: RolUsuarioDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, rolUserDto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const rolUsuario = new RolUsuario(rolUserDto);
+            const rolUsuario = new RolUser(rolUserDto);
             const userDtoFind = await RolUserRepository.findById(id);
 
             //const permisos = await controlPermisos(rolUserDto.sucursal, rolUserDto.codRolAplicacion, authSession);
@@ -57,21 +57,20 @@ class RolUsuarioService implements IRolUsuario {
         return res;
     }
 
-    async create(rolUserDto: RolUsuarioDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(rolUserDto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const rolUsuario = new RolUsuario(rolUserDto);
-
-                //const existeUser = await RolUserRepository.existeUsuario(rolUserDto.usuario);
+            const rolUsuario = new RolUser(rolUserDto);
+            rolUsuario.usuarioRegistro = authSession.username;
+                const existeUser = await RolUserRepository.findByDto(rolUserDto);
                 //const permisos = await controlPermisos(rolUserDto.sucursal, rolUserDto.codRolAplicacion, authSession);
-                if (true) {
-                //if (existeUser ) {
+                if (existeUser.length==0 ) {
                     res.success = true;
                     res.message = "Rol registrado";
-                    const oRolUsuario = await MongoDataSource.manager.save(rolUsuario);
+                    const oRolUsuario = RolUserRepository.save(rolUsuario);
                     res.data = oRolUsuario;
                 } else {
-                    res.message =  "El usuario no existe o esta inhabilitado!";
+                    res.message =  "El Rol ya existe";
                 }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -103,4 +102,4 @@ class RolUsuarioService implements IRolUsuario {
     
 }
 
-export default new RolUsuarioService();
+export default new RolUserService();

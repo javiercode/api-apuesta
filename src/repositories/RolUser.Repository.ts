@@ -1,15 +1,16 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import { RolUsuario } from "../entities/RolUsuario";
-import { RolUsuarioDto } from "../entities/dto/RolUserDto"
+import { RolUser } from "../entities/RolUser";
+import { RolUserDto } from "../entities/dto/RolUserDto"
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { ObjectID } from "mongodb";
+import { EstadoEnum } from "../configs/Config.enum";
 
 
 class RolUserRepository {
-    private repository = MongoDataSource.getRepository(RolUsuario);
+    private repository = MongoDataSource.getRepository(RolUser);
 
-    public async  findByDto (params: RolUsuarioDto): Promise<ListPaginate |null>{
+    public async  findByDtoCount (params: RolUserDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -20,7 +21,21 @@ class RolUserRepository {
         }
     };
 
-    public async  findById (params: string): Promise<RolUsuario | null>{    
+    public async  findByDto (params: RolUserDto): Promise<RolUser[]>{
+        let options={}
+        options={
+            where:{
+                codRol:new ObjectID(params.codRol),
+                codUsuario:new ObjectID(params.codUsuario),
+                estado:EstadoEnum.ACTIVO,
+            }
+        }
+        const result = await this.repository.find(options);
+        
+        return result;
+    }
+
+    public async  findById (params: string): Promise<RolUser | null>{    
         let options={}
         options = {
             where: {
@@ -35,25 +50,25 @@ class RolUserRepository {
     public async  desactivar (userId: string){       
         let options={}
         options={userId}
-        const firstUser = await this.repository.update(options,{estado:'A'});
+        const firstUser = await this.repository.update(options,{estado:EstadoEnum.ACTIVO});
         return firstUser;
     };
     
-    public async  actualizar (userId:string, param: RolUsuarioDto){
+    public async  actualizar (userId:string, param: RolUserDto){
         let options={}
         options={userId}
         const firstUser = await this.repository.update(options,param);
         return firstUser;
     };
     
-    public async  deleteUser (params: RolUsuario): Promise<DeleteResult>{
+    public async  deleteUser (params: RolUser): Promise<DeleteResult>{
         let options={}
         options={params}
         const firstUser = await this.repository.delete(options);
         return firstUser;
     };
     
-    public async  existeUsuario (params: string): Promise<RolUsuario|null>{    
+    public async  existeUsuario (params: string): Promise<RolUser|null>{    
         let options={}
         options={
             where:{user:params}}
@@ -64,7 +79,13 @@ class RolUserRepository {
 
 
     public async  listAll (limit:number, page:number): Promise<ListPaginate>{
-        const [result,total] = await this.repository.findAndCount();        
+        let options={}
+        options={
+            where:{
+                estado:EstadoEnum.ACTIVO,
+            }
+        }
+        const [result,total] = await this.repository.findAndCount(options);        
         return {
             data: result,
             count: total
@@ -76,6 +97,11 @@ class RolUserRepository {
             data: [],
             count: 0
         }
+    };
+
+    public async save(params: RolUser): Promise<RolUser> {
+        const oRol = await this.repository.save(params);
+        return oRol;
     };
 }
 export default new RolUserRepository();

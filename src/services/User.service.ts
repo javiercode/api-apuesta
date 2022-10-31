@@ -1,13 +1,14 @@
 import { IUser } from './interfaces/IUser.interface';
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { UserDto, UserEditDto } from '../entities/dto/UserDto';
+import { UserDto, UserEditDto, UserEditPassDto } from '../entities/dto/UserDto';
 import { ListPaginate } from '../entities/dto/GeneralDto';
 import UserRepository from '../repositories/User.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import { User } from '../entities/User';
 import AuthService from './Auth.service';
+import { EstadoEnum } from '../configs/Config.enum';
 
 class UserService implements IUser {
 
@@ -28,16 +29,40 @@ class UserService implements IUser {
         return res;
     }
 
+    async updatePassword(id: string, password: string): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
+        try {
+            const userDtoFind = await UserRepository.findByIdActive(id);
+            if (!userDtoFind) {
+                res.message = "Usuario no encontrado!";
+            } else {
+                const userEditDto:UserEditPassDto={
+                    password:AuthService.encrypt(password),
+                    fechaModificacion:getFecha(new Date()),
+                };
+                const oRolUsuario = await UserRepository.actualizar(id, userEditDto);
+                res.data = oRolUsuario;
+
+                res.success = true;
+                res.message = "Usuario actualizado!";
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error(error);
+            }
+        }
+        return res;
+    }
+
     async edit(id: string, userEditDto: UserEditDto): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await UserRepository.findById(id) as User;
-            const isActive = userDtoFind?.estado == 'A' || false;
-            if (!userDtoFind || !(isActive)) {
-                res.message = "Cliente no encontrado!";
+            const userDtoFind = await UserRepository.findByIdActive(id);
+            if (!userDtoFind) {
+                res.message = "Usuario no encontrado!";
             } else {
                 res.success = true;
-                res.message = "Cliente actualizado!";
+                res.message = "Usuario actualizado!";
 
                 userEditDto.fechaModificacion = getFecha(new Date());
                 const oRolUsuario = await UserRepository.actualizar(id, userEditDto);
@@ -55,12 +80,10 @@ class UserService implements IUser {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const oUser = new User(userDto);
-            oUser.fechaRegistro = getFecha(new Date())
+            const oRolUsuario = await MongoDataSource.manager.save(oUser);
             res.success = true;
             res.message = "Usuario registrado";
             oUser.password = AuthService.encrypt(userDto.password);
-
-            const oRolUsuario = await MongoDataSource.manager.save(oUser);
             res.data = oRolUsuario;
         } catch (error) {
             console.error(error);

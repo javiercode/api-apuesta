@@ -4,7 +4,7 @@ import {MongoDataSource} from "../configs/db";
 import jwt from 'jsonwebtoken';
 import {encodeToken} from '../configs/TokenMiddleware'
 import {MessageResponse} from '../entities/dto/GeneralDto';
-import UsersService from '../services/RolUsuario.service';
+import UsersService from '../services/RolUser.service';
 import AuthService from '../services/Auth.service';
 import { TypeKeyParamEnum} from '../configs/Config.enum';
 import { validateParams } from "../configs/General.functions";

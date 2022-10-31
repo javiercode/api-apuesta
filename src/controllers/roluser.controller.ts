@@ -1,11 +1,8 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
-import { RolUsuario } from '../entities/RolUsuario';
-import { MongoDataSource } from "../configs/db";
 import jwt from 'jsonwebtoken';
-import RolUsersService from '../services/RolUsuario.service';
-import RolService from '../services/Rol.service';
-import { RolUsuarioDto, RolUserRegex } from '../entities/dto/RolUserDto';
+import RolUsersService from '../services/RolUser.service';
+import { RolUserDto, RolUserRegex } from '../entities/dto/RolUserDto';
 
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
@@ -33,8 +30,8 @@ class RolUserController {
     }
 
     public async createRolUsuario(req: Request, res: Response) {
-        const userDto = req.body as RolUsuarioDto;
-        let result = this.validate(userDto);
+        const userDto = req.body as RolUserDto;
+        let result = validate(userDto);
         if(result.success){
             result = await RolUsersService.create(userDto, getAuthUser(req));
         }
@@ -42,10 +39,10 @@ class RolUserController {
     }
 
     public async editRolUsuario(req: Request, res: Response) {
-        const userDto = req.body as RolUsuarioDto;
+        const userDto = req.body as RolUserDto;
         const resultPk = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         
-        let result = this.validate(userDto);
+        let result = validate(userDto);
         if(result.success && resultPk.success){
             result = await RolUsersService.edit((req.params.id), userDto, getAuthUser(req));
         }else{
@@ -61,26 +58,27 @@ class RolUserController {
         }
         return res.status(200).send(result);
     }
-
-    private validate(dataForm: RolUsuarioDto): MessageResponse {
-        let res: MessageResponse = { success: false, message: "Error de validación del(los) campo(s): ", code: 0 };
-        try {
-            let campoError = [] as string[];
-            Object.keys(RolUserRegex).forEach((key:string) => {
-                const value = dataForm[key as keyof RolUsuarioDto];
-                const regexValue = RolUserRegex[key as keyof RolUsuarioDto] as string;
-                let regex = new RegExp(regexValue);
-                if (value && !regex.test(value.toString())) {
-                    campoError.push(key);
-                }
-            });
-            res.success = campoError.length==0;
-            res.message = campoError.length > 0? (res.message + campoError.join(", ")):"Sin error";    
-        } catch (error) {
-            console.error(error)
-        }
-        
-        return res;
-    }
 }
+
+function validate(dataForm: RolUserDto): MessageResponse {
+    let res: MessageResponse = { success: false, message: "Error de validación del(los) campo(s): ", code: 0 };
+    try {
+        let campoError = [] as string[];
+        Object.keys(RolUserRegex).forEach((key:string) => {
+            const value = dataForm[key as keyof RolUserDto];
+            const regexValue = RolUserRegex[key as keyof RolUserDto] as string;
+            let regex = new RegExp(regexValue);
+            if (value && !regex.test(value.toString())) {
+                campoError.push(key);
+            }
+        });
+        res.success = campoError.length==0;
+        res.message = campoError.length > 0? (res.message + campoError.join(", ")):"Sin error";    
+    } catch (error) {
+        console.error(error)
+    }
+    
+    return res;
+}
+
 export default new RolUserController();

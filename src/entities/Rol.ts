@@ -1,6 +1,7 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { RolDto } from './dto/RolDto';
+import { EstadoEnum } from '../configs/Config.enum';
 
 @Entity('Rol')
 export class Rol{
@@ -37,7 +38,7 @@ export class Rol{
         this.codigo=params.codigo;
         this.descripcion=params.descripcion;
         this.jerarquia=params.jerarquia;
-        this.estado = 'A';
+        this.estado = this.estado || EstadoEnum.ACTIVO; 
         
     }
 }

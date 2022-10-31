@@ -1,6 +1,7 @@
 @api = http://localhost:4000/apuesta/api/v1
 # @api = http://192.168.27.141:9091
 #@api = http://192.168.27.141:4000/micliente/api/v3
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcxNzc1MDgsImV4cCI6MTY2NzIyMDcwOH0.HuCGoAP38sQwCuzpYcEsGVmS4LwE9-7YK6Jb5Eg_FDU
 
 ### Login
 POST {{api}}/login
@@ -12,10 +13,16 @@ Content-Type: application/json
 }
 
 
-### Create user
-POST {{api}}/usuario/create
+### List user
+GET {{api}}/usuario/list/0/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxSWiIsIm5hbWUiOiJMUloiLCJyb2xJZCI6MCwiYVN1Y3Vyc2FsIjpbXSwic3VjdXJzYWwiOjAsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjY1NzIzMjA4LCJleHAiOjE2NjU3NjY0MDh9.hEDS8Fey8t3vuimV8dZDe8a71U3Gp_duc-pvotSm2yk
+Authorization: Bearer {{token}}
+
+
+### Create user
+POST {{api}}/usuario/create/
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "username":"xaviercode",
@@ -25,85 +32,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxSWiIsI
     "codFacebook":"kjjhfs7fsdf8sdfsd9f"
 }
 
-### Create user
-POST {{api}}/usuario/create
+### Edit user
+PUT {{api}}/usuario/edit/635efff6407de841b45b8eb7
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxSWiIsIm5hbWUiOiJMUloiLCJyb2xJZCI6MCwiYVN1Y3Vyc2FsIjpbXSwic3VjdXJzYWwiOjAsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjY1NzIzMjA4LCJleHAiOjE2NjU3NjY0MDh9.hEDS8Fey8t3vuimV8dZDe8a71U3Gp_duc-pvotSm2yk
+Authorization: Bearer {{token}}
 
 {
     "username":"xaviercode",
-    "name":"Javier Elvis",
-    "correo":"javier.azote@gmail.com",
-    "password":"string"
+    "name":"Javier Canqui",
+    "correo":"xaviercodee@gmail.com",
+    "password":"123456",
+    "codFacebook":"kjjhfs7fsdf8sdfsd9f"
 }
-
-### Create Turno
-POST {{api}}/turno/create
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxSWiIsIm5hbWUiOiJMUloiLCJyb2xJZCI6MCwiYVN1Y3Vyc2FsIjpbXSwic3VjdXJzYWwiOjAsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjY1NzIzMjA4LCJleHAiOjE2NjU3NjY0MDh9.hEDS8Fey8t3vuimV8dZDe8a71U3Gp_duc-pvotSm2yk
-
-{
-    
-    "responsable":"xavier",
-    "descripcion":"turno de daily",
-    "turno":0,
-    "tipo":"daily"
-}
-
-### Create Asignacion
-POST {{api}}/asignacion/create
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxSWiIsIm5hbWUiOiJMUloiLCJyb2xJZCI6MCwiYVN1Y3Vyc2FsIjpbXSwic3VjdXJzYWwiOjAsImFjdGl2byI6dHJ1ZSwiaWF0IjoxNjY1NTQ2NjM4LCJleHAiOjE2NjU1ODk4Mzh9.tzbAE7uKx4hPFngCFu_yt7mtQvwMnlOhP1CWi8eyQjU
-
-{
-    "responsable":"test",
-    "fecha":"11/10/2022 23:50:21",
-    "observacion":"",
-    "codTurno":"63463f2648ab4c278079624d"
-}
-
-### Create Cliente
-PUT {{api}}/cliente/edit/628e33bbf3b8ef4a00fb2871
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxIQyIsInJvbCI6WyJPRkkiXSwiYVN1Y3Vyc2FsIjpbMzUxXSwic3VjdXJzYWwiOjM1MSwiaWF0IjoxNjU0MjAwNjk5LCJleHAiOjE2NTQyNDM4OTl9.u9twOcDTbj18qQZYXNTvGgMXkv1PbwWyrwP7zxIKjDQ
-
-{
-    "nombre":"Eimy Farrafouler",
-    "telefono1":"54021784",
-    "telefono2":"",
-    "direccion":"direccion test",
-    "ci":"7845136",
-    "complemento":"",
-    "extension":"OR",
-    "comentario":"",
-    "latitud":"",
-    "longitud":"",
-}
-
-
-### Listar Tarea
-GET {{api}}/tarea/list/0/30
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IlRPUDEiLCJyb2wiOlsiQURNIl0sImFTdWN1cnNhbCI6WzcwMV0sInN1Y3Vyc2FsIjo3MDEsImlhdCI6MTY1NDczMjI1NiwiZXhwIjoxNjU0Nzc1NDU2fQ.kGj8T5xMiLxWSffeKM9jBlaW0bwlhzxtLlK2LIeyaoU
-
-### Buscar Cliente por nombre 8745125
-GET {{api}}/cliente/findCI/A
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxIQyIsInJvbCI6WyJPRkkiXSwiYVN1Y3Vyc2FsIjpbMzUxXSwic3VjdXJzYWwiOjM1MSwiaWF0IjoxNjU0MTAxNTYxLCJleHAiOjE2NTQxNDQ3NjF9.9Ylb_lv0SJvCm3CMHWUPctpbk-hOe9UhLRCRiWwOPkk
-
-### Buscar Cliente por ID
-GET {{api}}/cliente/find/628e37c1f3b8ef4a00fb2872
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxIQyIsInJvbCI6WyJPRkkiXSwiYVN1Y3Vyc2FsIjpbMzUxXSwic3VjdXJzYWwiOjM1MSwiaWF0IjoxNjU0MTAxNTYxLCJleHAiOjE2NTQxNDQ3NjF9.9Ylb_lv0SJvCm3CMHWUPctpbk-hOe9UhLRCRiWwOPkk
-
-
-### Listar Cliente
-GET {{api}}/cliente/list/0/30
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IlRPUDEiLCJyb2wiOlsiQURNIl0sImFTdWN1cnNhbCI6WzcwMV0sInN1Y3Vyc2FsIjo3MDEsImlhdCI6MTY1NDczMjI1NiwiZXhwIjoxNjU0Nzc1NDU2fQ.kGj8T5xMiLxWSffeKM9jBlaW0bwlhzxtLlK2LIeyaoU
-
-
-### Listar Cliente por sucursal
-GET {{api}}/cliente/listSucursal/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGF2ZSI6IkxIQyIsInJvbCI6WyJPRkkiXSwiYVN1Y3Vyc2FsIjpbMzUxXSwic3VjdXJzYWwiOjM1MSwiaWF0IjoxNjU0NzMyNTE4LCJleHAiOjE2NTQ3NzU3MTh9.VxHuU0S8ZaVrVplklSIF9CrWBhV5DdxZMuMbak7A0r4

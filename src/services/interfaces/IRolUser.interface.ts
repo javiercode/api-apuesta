@@ -1,6 +1,6 @@
 import {MessageResponse} from '../../entities/dto/GeneralDto';
 
-export interface IRolUsuario {
+export interface IRolUser {
     test: (authSession:any) => Promise<any>;
     list: (limit: number, page: number,authSession:any) => Promise<any>;
     create: (userDto: any,authSession:any) => Promise<any>;

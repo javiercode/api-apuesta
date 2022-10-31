@@ -1,6 +1,7 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { UserDto } from './dto/UserDto';
+import { EstadoEnum } from '../configs/Config.enum';
 
 @Entity('User')
 export class User{
@@ -39,7 +40,6 @@ export class User{
         this.name=params.name;
         this.password=params.password;
         this.codFacebook=params.codFacebook || "";
-        this.estado = params.estado || 'A';
-        
+        this.estado = this.estado || EstadoEnum.ACTIVO;       
     }
 }

@@ -1,6 +1,6 @@
 import { Request, response, Response } from "express";
 import UserService from '../services/User.service';
-import { UserDto, UserRegex } from '../entities/dto/UserDto';
+import { UserDto, UserEditDto, UserRegex } from '../entities/dto/UserDto';
 import { getFecha, validateParams } from "../configs/General.functions";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { MessageResponse } from "../entities/dto/GeneralDto";
@@ -34,6 +34,16 @@ class UserController {
         return res.status(200).send(result);
     }
 
+    async edit(req: Request, res: Response): Promise<Response> {
+        delete req.body.password;
+        const userDto = req.body as UserEditDto;
+        let result = validate(toIFormValidateCreate(userDto));
+        if (result.success) {
+            result = await UserService.edit(req.params.id,userDto);
+        }
+        return res.status(200).send(result);
+    }
+
     public async desactivar(req: Request, res: Response): Promise<Response> {
         let result = validateParams(req.params.id, TypeKeyParamEnum.OBJECT_ID)
         if (result.success) {
@@ -43,12 +53,18 @@ class UserController {
     }
 }
 
-function validate(dataForm: UserDto): MessageResponse {
+function validate(dataForm: UserDto | UserEditDto): MessageResponse {
     let res: MessageResponse = { success: false, message: "Error de validación del(los) campo(s): ", code: 0 };
     try {
         let campoError = [] as string[];
-        Object.keys(UserRegex).forEach((key: string) => {
-            const value = dataForm[key as keyof UserDto];
+        Object.keys(dataForm).forEach((key: string) => {
+            let value;
+            if(dataForm?.type && dataForm.type =='edit'){
+                value = dataForm[key as keyof UserEditDto];
+            }
+            if(dataForm?.type && dataForm.type =='dto'){
+                value = dataForm[key as keyof UserDto];
+            }
             const regexValue = UserRegex[key as keyof UserDto] as any;
             let regex = new RegExp(regexValue);
             if (value && !regex.test(value.toString())) {
@@ -64,14 +80,24 @@ function validate(dataForm: UserDto): MessageResponse {
     return res;
 }
 
-function toIFormValidateCreate(dataForm: UserDto): UserDto {
-    let res: UserDto = {
-        username: dataForm.username,
-        name: dataForm.name,
-        correo: dataForm.correo,
-        password: dataForm.password,
-        codFacebook: dataForm.codFacebook,
-    };
+function toIFormValidateCreate(dataForm: UserDto| UserEditDto): UserDto|UserEditDto {
+    let res;
+    if(dataForm.type=='dto'){
+        res = {
+            username: dataForm.username,
+            name: dataForm.name,
+            correo: dataForm.correo,
+            codFacebook: dataForm.codFacebook,
+            password: dataForm.password,
+        };
+    }else{
+        res = {
+            username: dataForm.username,
+            name: dataForm.name,
+            correo: dataForm.correo,
+            codFacebook: dataForm.codFacebook,
+        };
+    }
     return res;
 }
 
