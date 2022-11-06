@@ -1,8 +1,7 @@
-enum RolesTypeEnum {
+enum RolesEnum {
     ADMIN = 'ADM',
-    GERENTE = 'GER',
-    JEFE = 'JEF',
-    OFICIAL = 'OFI'
+    JUGADOR = 'JUG',
+    SEO = 'SEO'
 }
 
 enum EstadoEnum {
@@ -23,4 +22,4 @@ enum TypeKeyParamEnum {
     TIPO_TAREA = 'Tipo tarea',
 }
 
-export  {TypeKeyParamEnum,RolesTypeEnum, EstadoEnum}
+export  {TypeKeyParamEnum,RolesEnum, EstadoEnum}

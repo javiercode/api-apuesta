@@ -4,6 +4,7 @@ import { JwtPayload } from '../entities/dto/GeneralDto';
 import { UserDto, UserEditDto, UserEditPassDto } from '../entities/dto/UserDto';
 import { ListPaginate } from '../entities/dto/GeneralDto';
 import UserRepository from '../repositories/User.Repository';
+import RolUserService from './RolUser.service';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import { User } from '../entities/User';
@@ -76,6 +77,20 @@ class UserService implements IUser {
         return res;
     }
 
+    async createAdm(userDto: UserDto): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
+        try {
+            const oUser = new User(userDto);
+            const oRolUsuario = await MongoDataSource.manager.save(oUser);
+            res.success = true;
+            res.message = "Usuario registrado";
+            oUser.password = AuthService.encrypt(userDto.password);
+            res.data = oRolUsuario;
+        } catch (error) {
+            console.error(error);
+        }
+        return res;
+    }
     async create(userDto: UserDto): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
@@ -90,7 +105,6 @@ class UserService implements IUser {
         }
         return res;
     }
-
     
     async getUsuario(usuario: string):Promise<string> {
         const query = usuario;

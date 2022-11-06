@@ -5,8 +5,6 @@ import { RolUserDto } from '../entities/dto/RolUserDto';
 import { RolUser } from '../entities/RolUser';
 import RolUserRepository from '../repositories/RolUser.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
-import { esAdmin, esOficial, esJefe, esGerente, controlPermisos } from '../configs/TokenMiddleware';
-import { RolesTypeEnum } from '../configs/Config.enum';
 
 
 class RolUserService implements IRolUser {

@@ -5,8 +5,6 @@ import { RolEditDto, RolDto } from '../entities/dto/RolDto';
 import { Rol} from '../entities/Rol';
 import RolRepository from '../repositories/Rol.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
-import { esAdmin, esOficial, esJefe, esGerente, controlPermisos } from '../configs/TokenMiddleware';
-import { RolesTypeEnum } from '../configs/Config.enum';
 import { getFecha } from '../configs/General.functions';
 
 

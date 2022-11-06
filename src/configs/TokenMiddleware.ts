@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { decode } from 'punycode';
 import { JwtPayload, MessageResponse } from '../entities/dto/GeneralDto';
-import { RolesTypeEnum } from '../configs/Config.enum';
+import { RolesEnum } from '../configs/Config.enum';
 import RolRepository from '../repositories/Rol.Repository';
 import jwt from 'jsonwebtoken';
 
@@ -96,27 +96,21 @@ export const getAuthUser = (req: Request) => {
     return auth;
 }
 
-export const esOficial = (auth: JwtPayload) => {
+export const esJugador = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const esAdmin = aRol.filter(rolAplicacion => rolAplicacion !== RolesTypeEnum.OFICIAL)
+    const esAdmin = aRol.filter(rolAplicacion => rolAplicacion !== RolesEnum.JUGADOR)
     return esAdmin.length==0;
 }
 
 export const esAdmin = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesTypeEnum.ADMIN))
+    const rolFind = aRol.find(element => (element === RolesEnum.ADMIN))
     return rolFind !== undefined;
 }
 
-export const esJefe = (auth: JwtPayload) => {
+export const esSeo = (auth: JwtPayload) => {
     const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesTypeEnum.JEFE))
-    return rolFind !== undefined;
-}
-
-export const esGerente = (auth: JwtPayload) => {
-    const aRol = auth.rol || [];
-    const rolFind = aRol.find(element => (element === RolesTypeEnum.GERENTE))
+    const rolFind = aRol.find(element => (element === RolesEnum.SEO))
     return rolFind !== undefined;
 }
 
