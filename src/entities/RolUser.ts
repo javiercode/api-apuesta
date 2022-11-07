@@ -15,6 +15,9 @@ export class RolUser {
     @Column()
     codUsuario:ObjectID;
 
+    @Column()
+    codGrupo:ObjectID;
+
     @CreateDateColumn()
     fechaRegistro:Date
 

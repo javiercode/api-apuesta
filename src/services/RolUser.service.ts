@@ -4,6 +4,7 @@ import { JwtPayload } from '../entities/dto/GeneralDto';
 import { RolUserDto } from '../entities/dto/RolUserDto';
 import { RolUser } from '../entities/RolUser';
 import RolUserRepository from '../repositories/RolUser.Repository';
+import RolRepository from '../repositories/Rol.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 
 
@@ -45,7 +46,7 @@ class RolUserService implements IRolUser {
                 await RolUserRepository.actualizar(id, rolUserDto);
                 res.data = rolUserDto;
             } else {
-                res.message =  "Rol no encontrado";
+                res.message = "Rol no encontrado";
             }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -55,25 +56,28 @@ class RolUserService implements IRolUser {
         return res;
     }
 
-    async create(rolUserDto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const rolUsuario = new RolUser(rolUserDto);
-            rolUsuario.usuarioRegistro = authSession.username;
-                const existeUser = await RolUserRepository.findByDto(rolUserDto);
-                //const permisos = await controlPermisos(rolUserDto.sucursal, rolUserDto.codRolAplicacion, authSession);
-                if (existeUser.length==0 ) {
+            //const existeUser = await RolUserRepository.findByDto(dto);
+            const oRol = await RolRepository.findByCodigo(dto.codRol);
+            console.log("dto",dto)
+            if ( oRol) {
+                dto.codRol = oRol.id.toHexString();
+                const rolUsuario = new RolUser(dto);
+                const oRolUser = await RolUserRepository.findByDto(dto);
+                if(oRolUser){
+                    rolUsuario.usuarioRegistro = authSession.username;
                     res.success = true;
                     res.message = "Rol registrado";
                     const oRolUsuario = RolUserRepository.save(rolUsuario);
                     res.data = oRolUsuario;
-                } else {
-                    res.message =  "El Rol ya existe";
                 }
-        } catch (error) {
-            if (error instanceof TypeError) {
-                console.error(error);
+            } else {
+                res.message = "El Rol no existe!";
             }
+        } catch (error) {
+            console.error(error);
         }
         return res;
     }
@@ -83,9 +87,9 @@ class RolUserService implements IRolUser {
         try {
             const userDtoFind = await RolUserRepository.findById(idUser);
             if (userDtoFind) {
-                    res.success = true;
-                    res.message = "rol eliminado";
-                    await RolUserRepository.desactivar(idUser);
+                res.success = true;
+                res.message = "rol eliminado";
+                await RolUserRepository.desactivar(idUser);
             } else {
                 res.message = "rol no encontrado!";
             }
@@ -97,7 +101,7 @@ class RolUserService implements IRolUser {
         return res;
     }
 
-    
+
 }
 
 export default new RolUserService();

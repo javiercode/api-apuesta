@@ -21,7 +21,7 @@ class RolUserRepository {
         }
     };
 
-    public async  findByDto (params: RolUserDto): Promise<RolUser[]>{
+    public async  findByDto (params: RolUserDto): Promise<RolUser | null>{
         let options={}
         options={
             where:{
@@ -30,7 +30,7 @@ class RolUserRepository {
                 estado:EstadoEnum.ACTIVO,
             }
         }
-        const result = await this.repository.find(options);
+        const result = await this.repository.findOne(options);
         
         return result;
     }

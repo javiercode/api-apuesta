@@ -29,7 +29,7 @@ class RolUserController {
         return res.status(200).send(result);
     }
 
-    public async createRolUsuario(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         const userDto = req.body as RolUserDto;
         let result = validate(userDto);
         if(result.success){
@@ -38,7 +38,7 @@ class RolUserController {
         return res.status(200).send(result);
     }
 
-    public async editRolUsuario(req: Request, res: Response) {
+    public async edit(req: Request, res: Response) {
         const userDto = req.body as RolUserDto;
         const resultPk = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         
