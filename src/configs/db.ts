@@ -4,7 +4,8 @@ export const MongoDataSource = new DataSource({
     type: "mongodb",
     url: process.env.MONGO_URL,
     database: process.env.MONGO_DATABASE,
-    synchronize: false,
+    // synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [
         "./src/entities/*.ts"

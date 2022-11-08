@@ -91,15 +91,21 @@ class UserService implements IUser {
         }
         return res;
     }
+
     async create(userDto: UserDto): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const oUser = new User(userDto);
-            const oRolUsuario = await MongoDataSource.manager.save(oUser);
-            res.success = true;
-            res.message = "Usuario registrado";
+            let oUser = new User(userDto);
             oUser.password = AuthService.encrypt(userDto.password);
-            res.data = oRolUsuario;
+            const oUserFind = await UserRepository.findByUsername(userDto.username);
+            if(!oUserFind){
+                oUser = await UserRepository.save(oUser);
+                res.message = "Usuario registrado";
+                res.success = true;
+                res.data = oUser;
+            }else{
+                res.message = "Username ya registrado";
+            }
         } catch (error) {
             console.error(error);
         }

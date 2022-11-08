@@ -7,7 +7,7 @@ import { EstadoEnum } from '../configs/Config.enum';
 export class Grupo{
     
     @ObjectIdColumn()
-    public id: ObjectID;
+    public id: ObjectID
 
     @Column()
     @Index({ unique: true })
@@ -36,7 +36,8 @@ export class Grupo{
     
     constructor(params: GrupoDto = {} as GrupoDto){
         this.nombre=params.nombre;
-        this.estado = this.estado || EstadoEnum.ACTIVO; 
-        
+        this.privacidad=params.privacidad;
+        this.clave=params.clave;
+        this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

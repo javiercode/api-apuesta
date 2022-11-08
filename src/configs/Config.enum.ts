@@ -11,6 +11,11 @@ enum EstadoEnum {
     ELIMINADO = 'D',
 }
 
+enum TipoPrivacidadEnum {
+    PUBLICO = 'PUB',
+    PRIVADO = 'PR'
+}
+
 enum TypeKeyParamEnum {
     OBJECT_ID = 'objectId',
     PK_ORACLE = 'primaryKey',

@@ -1,9 +1,11 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, Unique } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { UserDto } from './dto/UserDto';
 import { EstadoEnum } from '../configs/Config.enum';
 
 @Entity('User')
+// @Unique(["username", "correo"])
+// @Index(['username'], { unique: true })
 export class User{
     
     @ObjectIdColumn()

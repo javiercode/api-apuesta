@@ -59,15 +59,13 @@ class GrupoService implements IGrupo {
     async create(dto: GrupoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            let oGrupo = new Grupo();
-            oGrupo.nombre = dto.nombre.toLocaleLowerCase();
-            oGrupo.codigo = this.generarCodigo();
+            dto.nombre = dto.nombre.toUpperCase();
+            let oGrupo = new Grupo(dto);
             oGrupo.usuarioRegistro = authSession.username;
             oGrupo.fechaRegistro = getFecha(new Date())
+            oGrupo = await MongoDataSource.manager.save(oGrupo);
             res.success = true;
             res.message = "Grupo registrado";
-
-            oGrupo = await MongoDataSource.manager.save(oGrupo);
             res.data = oGrupo;
         } catch (error) {
             console.error(error);

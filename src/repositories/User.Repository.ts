@@ -15,6 +15,15 @@ class UserRepository{
         return firstUser;
     };
 
+    public async findByUsername(params: string): Promise<User | null> {
+        let options = {};
+        options = {
+            where: { username: params }
+        }
+        const firstUser = await this.repository.findOne(options);
+        return firstUser;
+    };
+
     public async findCredenciales(username: string, password:string ): Promise<User | null> {
         let options = {};
         options = {
