@@ -36,6 +36,7 @@ export class RolUser {
     constructor(params: RolUserDto = {} as RolUserDto){
         this.codRol = new ObjectID(params.codRol),
         this.codUsuario = new ObjectID(params.codUsuario),
+        this.codGrupo = new ObjectID(params.codGrupo),
         this.usuarioRegistro = params.usuarioRegistro || this.usuarioRegistro;
         this.estado = this.estado || EstadoEnum.ACTIVO;  
     }

@@ -1,10 +1,10 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
 import { ObjectID } from 'mongodb';
-import { GrupoDto } from './dto/GrupoDto';
+import { EquipoDto } from './dto/EquipoDto';
 import { EstadoEnum } from '../configs/Config.enum';
 
-@Entity('Grupo')
-export class Grupo{
+@Entity('Equipo')
+export class Equipo{
     
     @ObjectIdColumn()
     public id: ObjectID
@@ -12,15 +12,6 @@ export class Grupo{
     @Column()
     @Index({ unique: true })
     nombre:string
-
-    @Column()
-    privacidad:string
-
-    @Column()
-    clave:string
-
-    @Column()
-    tipo:string
 
     @Column()
     estado:string
@@ -37,11 +28,8 @@ export class Grupo{
     @Column()
     usuarioModificacion:string
     
-    constructor(params: GrupoDto = {} as GrupoDto){
+    constructor(params: EquipoDto = {} as EquipoDto){
         this.nombre=params.nombre;
-        this.privacidad=params.privacidad;
-        this.tipo=params.tipo;
-        this.clave=params.clave;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

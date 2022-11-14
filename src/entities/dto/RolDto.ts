@@ -3,15 +3,14 @@ export interface RolDto {
     descripcion:string,
     jerarquia:number,
     usuarioRegistro?: string,
-    sucursalRegistro?: number,
+    fechaRegistro?: Date,
 }
 
 export interface RolEditDto {
     codigo:string,
     descripcion:string,
     jerarquia:number,
-    usurioModificacion?:string
-    sucursalModificacion?:number
+    usurioModificacion?:string,
     fechaModificacion?:Date 
 }
 

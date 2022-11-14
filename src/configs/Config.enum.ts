@@ -11,6 +11,11 @@ enum EstadoEnum {
     ELIMINADO = 'D',
 }
 
+enum TipoGrupoEnum {
+    SIMPLE = 'S',
+    MULTIPLE = 'M',
+}
+
 enum TipoPrivacidadEnum {
     PUBLICO = 'PUB',
     PRIVADO = 'PR'

@@ -27,6 +27,7 @@ class RolUserRepository {
             where:{
                 codRol:new ObjectID(params.codRol),
                 codUsuario:new ObjectID(params.codUsuario),
+                codGrupo:new ObjectID(params.codGrupo),
                 estado:EstadoEnum.ACTIVO,
             }
         }

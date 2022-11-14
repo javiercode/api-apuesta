@@ -3,6 +3,7 @@ export interface RolUserDto {
     codUsuario:string,
     codGrupo:string,
     usuarioRegistro?: string,
+    fechaRegistro?: Date,
 }
 export interface RolUserEditDto {
     codRol:string,
@@ -13,7 +14,7 @@ export interface RolUserEditDto {
 }
 
 export const RolUserRegex: RolUserDto = {
-    codRol: "^[A-Z]{3,5}$",
+    codRol: "^[a-fA-F0-9]{20,50}$",
     codUsuario: "^[a-fA-F0-9]{20,50}$",
-    codGrupo: "^[a-fA-F0-9]{20,50}$",
+    codGrupo: "^[a-zA-Z0-9_]{3,300}$",
 };

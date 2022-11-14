@@ -1,16 +1,22 @@
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { GrupoEditDto, GrupoDto } from '../entities/dto/GrupoDto';
-import { Grupo} from '../entities/Grupo';
-import GrupoRepository from '../repositories/Grupo.Repository';
+import { ApuestaEditDto, ApuestaDto } from '../entities/dto/ApuestaDto';
+import { Apuesta} from '../entities/Apuesta';
+import ApuestaRepository from '../repositories/Apuesta.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
-import IGrupo from './interfaces/IGrupo.interface';
+import IApuesta from './interfaces/IApuesta.interface';
 
 
-class GrupoService implements IGrupo {
+class EquipoService implements IApuesta {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
+        /*module.exports = function(app){
+            fs.readdirSync(__dirname).forEach(function(file) {
+                if (file == "index.js") return;
+                var name = file.substr(0, file.indexOf('.'));
+                require('./' + name)(app);
+            });
+        }*/
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
         return res;
     }
@@ -19,7 +25,7 @@ class GrupoService implements IGrupo {
     async listAll(): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await GrupoRepository.listAll();
+            let query = await ApuestaRepository.listAll();
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -33,20 +39,19 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async edit(id: string, dto: GrupoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, dto: ApuestaEditDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await GrupoRepository.findById(id) as Grupo;
+            const userDtoFind = await ApuestaRepository.findById(id) as Apuesta;
             const isActive = userDtoFind?.estado == 'A' || false;
             if (!userDtoFind || !(isActive)) {
-                res.message = "Grupo no encontrado!";
+                res.message = "Equipo no encontrado!";
             } else {
-                res.success = true;
-                res.message = "Grupo actualizado!";
-
                 dto.fechaModificacion = getFecha(new Date());
-                const oGrupo = await GrupoRepository.actualizar(id, dto);
+                await ApuestaRepository.actualizar(id, dto);
                 res.data = dto;
+                res.success = true;
+                res.message = "Equipo actualizado!";
             }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -56,21 +61,20 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async create(dto: GrupoDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: ApuestaDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            dto.nombre = dto.nombre.toUpperCase();
-            let oGrupo = new Grupo(dto);
-            oGrupo.usuarioRegistro = authSession.username;
-            oGrupo.fechaRegistro = getFecha(new Date())
-            const oGrupoFind = await GrupoRepository.findByNombre(dto.nombre);
-            if(!oGrupoFind){
-                oGrupo = await GrupoRepository.save(oGrupo);
+            let oEquipo = new Apuesta(dto);
+            oEquipo.usuarioRegistro = authSession.username;
+            oEquipo.fechaRegistro = getFecha(new Date())
+            const oEquipoFind = await ApuestaRepository.findByDto(dto);
+            if(!oEquipoFind){
+                oEquipo = await ApuestaRepository.save(oEquipo);
                 res.success = true;
-                res.message = "Grupo registrado";
-                res.data = oGrupo;
+                res.message = "Equipo registrado";
+                res.data = oEquipo;
             }else{
-                res.message = "Nombre de grupo duplicado";
+                res.message = "Nombre de Equipo duplicado";
             }
             
         } catch (error) {
@@ -78,18 +82,18 @@ class GrupoService implements IGrupo {
         }
         return res;
     }
-    
+
     async desactivar(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
-            const userDtoFind = await GrupoRepository.findById(idUser);
+            const userDtoFind = await ApuestaRepository.findById(idUser);
             if (userDtoFind) {
-                GrupoRepository.desactivar(idUser);
+                ApuestaRepository.desactivar(idUser);
                 res.success = true;
-                res.message = "Grupo eliminado";
+                res.message = "Equipo eliminado";
 
             } else {
-                res.message = "Grupo no encontrado!";
+                res.message = "Equipo no encontrado!";
             }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -100,4 +104,4 @@ class GrupoService implements IGrupo {
     }
 }
 
-export default new GrupoService();
+export default new EquipoService();

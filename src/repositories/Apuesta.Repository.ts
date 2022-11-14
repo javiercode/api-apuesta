@@ -2,15 +2,15 @@ import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeor
 import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
-import { GrupoDto } from "../entities/dto/GrupoDto";
+import { ApuestaDto } from "../entities/dto/ApuestaDto";
 import { ObjectID } from "mongodb";
-import { Grupo } from "../entities/Grupo";
+import { Apuesta } from "../entities/Apuesta";
 
 
-class RolRepository {
-    private repository = MongoDataSource.getRepository(Grupo);
+class ApuestaRepository {
+    private repository = MongoDataSource.getRepository(Apuesta);
 
-    public async  findByDto (params: GrupoDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: ApuestaDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}
         const [result,total] = await this.repository.findAndCount(options);
@@ -21,7 +21,7 @@ class RolRepository {
         }
     };
 
-    public async  findById (params: string): Promise<Grupo | null>{    
+    public async  findById (params: string): Promise<Apuesta | null>{    
         let options={}
         options = {
             where: {
@@ -32,7 +32,7 @@ class RolRepository {
         return result
     };
 
-    public async findByNombre (params: string): Promise<Grupo | null>{    
+    public async findByNombre (params: string): Promise<Apuesta | null>{    
         let options={}
         options = {
             where: {
@@ -43,7 +43,7 @@ class RolRepository {
         return result
     };
 
-    public async  findByINId (params: string[]): Promise<Grupo[]>{    
+    public async  findByINId (params: string[]): Promise<Apuesta[]>{    
         let options={}
         options={
             where: {
@@ -60,12 +60,12 @@ class RolRepository {
         return firstUser;
     };
     
-    public async  actualizar (id:string, param: GrupoDto){
+    public async  actualizar (id:string, param: ApuestaDto){
         const firstUser = await this.repository.update(id,param);
         return firstUser;
     };
     
-    public async  delete (params: Grupo): Promise<DeleteResult>{
+    public async  delete (params: Apuesta): Promise<DeleteResult>{
         let options={}
         options={params}
         const firstUser = await this.repository.delete(options);
@@ -87,10 +87,10 @@ class RolRepository {
         }
     };
 
-    public async save(params: Grupo): Promise<Grupo> {
+    public async save(params: Apuesta): Promise<Apuesta> {
         const oRol = await this.repository.save(params);
         return oRol;
     };
 
 }
-export default new RolRepository();
+export default new ApuestaRepository();

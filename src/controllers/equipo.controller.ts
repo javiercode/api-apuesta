@@ -1,42 +1,38 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
-import { RolUser } from '../entities/RolUser';
-import { MongoDataSource } from "../configs/db";
-import jwt from 'jsonwebtoken';
-import RolService from '../services/Rol.service';
-
+import EquipoService from '../services/Equipo.service';
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { validateParams } from "../configs/General.functions";
-import { RolDto, RolDtoForm, RolEditDto, RolRegex } from "../entities/dto/RolDto";
+import { EquipoDto, EquipoEditDto, EquipoRegex } from "../entities/dto/EquipoDto";
 
-class RolController {
+class EquipoController {
 
     public async test(req: Request, res: Response) {
         const { page, limit } = req.params;
-        const result = await RolService.test(getAuthUser(req));
+        const result = await EquipoService.test(getAuthUser(req));
         return res.status(200).send(result);
     }
 
     public async list(req: Request, res: Response) {
         const { page, limit } = req.params;
         let result;
-        result = await RolService.listAll();
+        result = await EquipoService.listAll();
         return res.status(200).send(result);
     }
 
     public async create(req: Request, res: Response) {
-        const userDto = req.body as RolDto;
-        const result = await RolService.create(userDto, getAuthUser(req));
+        const userDto = req.body as EquipoDto;
+        const result = await EquipoService.create(userDto, getAuthUser(req));
         return res.status(200).send(result);
     }
 
     public async edit(req: Request, res: Response) {
-        const userDto = req.body as RolEditDto;
+        const userDto = req.body as EquipoEditDto;
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         
         if(result.success){
-            result = await RolService.edit((req.params.id), userDto, getAuthUser(req));
+            result = await EquipoService.edit((req.params.id), userDto, getAuthUser(req));
         }
         return res.status(200).send(result);
     }
@@ -44,9 +40,9 @@ class RolController {
     public async delete(req: Request, res: Response) {
         let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
         if(result.success){
-            result = await RolService.desactivar((req.params.id), getAuthUser(req));
+            result = await EquipoService.desactivar((req.params.id), getAuthUser(req));
         }
         return res.status(200).send(result);
     }
 }
-export default new RolController();
+export default new EquipoController();

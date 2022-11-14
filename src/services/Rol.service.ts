@@ -59,14 +59,20 @@ class RolService implements IRol {
     async create(rolDto: RolDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const oRol = new Rol(rolDto);
+            let oRol = new Rol(rolDto);
             oRol.usuarioRegistro = authSession.username;
-            oRol.fechaRegistro = getFecha(new Date())
-            res.success = true;
-            res.message = "Rol registrado";
+            oRol.fechaRegistro = getFecha(new Date());
+            const oRolFind = await RolRepository.findByCodigo(rolDto.codigo);
+            if(!oRolFind){
+                oRol = await RolRepository.save(oRol);
+                res.success = true;
+                res.message = "Rol registrado";
+                res.data = oRol;
+            }else{
+                res.message = "Codigo Rol duplicado";
+            }
 
-            const oRolUsuario = await MongoDataSource.manager.save(oRol);
-            res.data = oRolUsuario;
+            
         } catch (error) {
             console.error(error);
         }

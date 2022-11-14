@@ -1,14 +1,14 @@
 import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
-import { GrupoEditDto, GrupoDto } from '../entities/dto/GrupoDto';
-import { Grupo} from '../entities/Grupo';
-import GrupoRepository from '../repositories/Grupo.Repository';
+import { PartidoEditDto, PartidoDto } from '../entities/dto/PartidoDto';
+import { Partido} from '../entities/Partido';
+import PartidoRepository from '../repositories/Partido.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
-import IGrupo from './interfaces/IGrupo.interface';
+import IPartido from './interfaces/IPartido.interface';
 
 
-class GrupoService implements IGrupo {
+class PartidoService implements IPartido {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos!", code: 0 };
@@ -19,7 +19,7 @@ class GrupoService implements IGrupo {
     async listAll(): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
         try {
-            let query = await GrupoRepository.listAll();
+            let query = await PartidoRepository.listAll();
             res.data = query.data;
             res.success = true;
             res.message = "Obtención exitosa";
@@ -33,19 +33,19 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async edit(id: string, dto: GrupoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async edit(id: string, dto: PartidoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const userDtoFind = await GrupoRepository.findById(id) as Grupo;
+            const userDtoFind = await PartidoRepository.findById(id) as Partido;
             const isActive = userDtoFind?.estado == 'A' || false;
             if (!userDtoFind || !(isActive)) {
-                res.message = "Grupo no encontrado!";
+                res.message = "Partido no encontrado!";
             } else {
                 res.success = true;
-                res.message = "Grupo actualizado!";
+                res.message = "Partido actualizado!";
 
                 dto.fechaModificacion = getFecha(new Date());
-                const oGrupo = await GrupoRepository.actualizar(id, dto);
+                await PartidoRepository.actualizar(id, dto);
                 res.data = dto;
             }
         } catch (error) {
@@ -56,21 +56,20 @@ class GrupoService implements IGrupo {
         return res;
     }
 
-    async create(dto: GrupoDto, authSession: JwtPayload): Promise<MessageResponse> {
+    async create(dto: PartidoDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            dto.nombre = dto.nombre.toUpperCase();
-            let oGrupo = new Grupo(dto);
-            oGrupo.usuarioRegistro = authSession.username;
-            oGrupo.fechaRegistro = getFecha(new Date())
-            const oGrupoFind = await GrupoRepository.findByNombre(dto.nombre);
-            if(!oGrupoFind){
-                oGrupo = await GrupoRepository.save(oGrupo);
+            let oPartido = new Partido(dto);
+            oPartido.usuarioRegistro = authSession.username;
+            oPartido.fechaRegistro = getFecha(new Date())
+            const oPartidoFind = await PartidoRepository.findByDto(dto);
+            if(!oPartidoFind){
+                oPartido = await PartidoRepository.save(oPartido);
                 res.success = true;
-                res.message = "Grupo registrado";
-                res.data = oGrupo;
+                res.message = "Partido registrado";
+                res.data = oPartido;
             }else{
-                res.message = "Nombre de grupo duplicado";
+                res.message = "Nombre de partido duplicado";
             }
             
         } catch (error) {
@@ -78,18 +77,18 @@ class GrupoService implements IGrupo {
         }
         return res;
     }
-    
+
     async desactivar(idUser: string, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de eliminación", code: 0 };
         try {
-            const userDtoFind = await GrupoRepository.findById(idUser);
+            const userDtoFind = await PartidoRepository.findById(idUser);
             if (userDtoFind) {
-                GrupoRepository.desactivar(idUser);
+                PartidoRepository.desactivar(idUser);
                 res.success = true;
-                res.message = "Grupo eliminado";
+                res.message = "Partido eliminado";
 
             } else {
-                res.message = "Grupo no encontrado!";
+                res.message = "Partido no encontrado!";
             }
         } catch (error) {
             if (error instanceof TypeError) {
@@ -100,4 +99,4 @@ class GrupoService implements IGrupo {
     }
 }
 
-export default new GrupoService();
+export default new PartidoService();

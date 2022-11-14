@@ -5,6 +5,7 @@ import { RolUserDto } from '../entities/dto/RolUserDto';
 import { RolUser } from '../entities/RolUser';
 import RolUserRepository from '../repositories/RolUser.Repository';
 import RolRepository from '../repositories/Rol.Repository';
+import GrupoRepository from '../repositories/Grupo.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 
 
@@ -59,14 +60,16 @@ class RolUserService implements IRolUser {
     async create(dto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            //const existeUser = await RolUserRepository.findByDto(dto);
             const oRol = await RolRepository.findByCodigo(dto.codRol);
-            console.log("dto",dto)
-            if ( oRol) {
+            const oGrupo = await GrupoRepository.findByNombre(dto.codGrupo);
+            
+            if ( oRol && oGrupo) {
                 dto.codRol = oRol.id.toHexString();
+                dto.codGrupo = oGrupo.id.toHexString();
                 const rolUsuario = new RolUser(dto);
                 const oRolUser = await RolUserRepository.findByDto(dto);
-                if(oRolUser){
+                console.log("oRolUser",oRolUser)
+                if(oRolUser==undefined){
                     rolUsuario.usuarioRegistro = authSession.username;
                     res.success = true;
                     res.message = "Rol registrado";
