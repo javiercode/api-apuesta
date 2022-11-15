@@ -16,6 +16,9 @@ export class Partido{
     visitante: ObjectID
 
     @Column()
+    fecha: Date
+
+    @Column()
     marcadorLocal: number
 
     @Column()
@@ -45,6 +48,7 @@ export class Partido{
     constructor(params: PartidoDto = {} as PartidoDto){
         this.local= new ObjectId(params.local);
         this.visitante= new ObjectId(params.visitante);
+        this.fecha= params.fecha;
         this.marcadorLocal= params.marcadorLocal;
         this.marcadorVisitante= params.marcadorVisitante;
         this.penalesLocal= params.penalesLocal;

@@ -5,8 +5,8 @@ import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
 import UsersService from './User.service';
 import * as crypto from "crypto";
+import RolUserRepository from '../repositories/RolUser.Repository';
 import UserRepository from '../repositories/User.Repository';
-
 
 class AuthService implements IAuth {
 
@@ -20,6 +20,7 @@ class AuthService implements IAuth {
             const verifyUser = await this.verifyCredential(username, password);
             if(verifyUser.success){
                 const usuarioXSucursal = await UsersService.getUsuario(username);
+                const userRol = await RolUserRepository.findByUser(username);
                 if (usuarioXSucursal.length >= 1) {
                     result = {
                         success: true,
@@ -28,9 +29,7 @@ class AuthService implements IAuth {
                         data: {
                             'NOMBRE': verifyUser.data?.name,
                             'CORREO': verifyUser.data?.correo,
-                            'ROL_ID': 0,
-                            'SUCURSALES': [],
-                            'SUCURSAL_PRINCIPAL': 0,
+                            'ROL_USER': userRol?.data,
                         }
                     };
                 } else {

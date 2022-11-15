@@ -10,14 +10,11 @@ class RolRepository {
     private repository = MongoDataSource.getRepository(Partido);
     private repository2:Repository<any>;
 
-    public async  findByDto (params: PartidoDto): Promise<ListPaginate |null>{
+    public async  findByDto (params: PartidoDto): Promise<Partido |null>{
         let options={}
         options={...params}
-        const [result,total] = await this.repository.findAndCount(options);
-        return {
-            data: result,
-            count: total
-        }
+        const result = await this.repository.findOne(options);
+        return result;
     };
 
     public async  findById (params: string): Promise<Partido | null>{    

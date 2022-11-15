@@ -62,6 +62,7 @@ class PartidoService implements IPartido {
             let oPartido = new Partido(dto);
             oPartido.usuarioRegistro = authSession.username;
             oPartido.fechaRegistro = getFecha(new Date())
+            oPartido.fecha = getFecha(dto.fecha)
             const oPartidoFind = await PartidoRepository.findByDto(dto);
             if(!oPartidoFind){
                 oPartido = await PartidoRepository.save(oPartido);

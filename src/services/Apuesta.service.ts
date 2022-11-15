@@ -5,11 +5,17 @@ import ApuestaRepository from '../repositories/Apuesta.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 import { getFecha } from '../configs/General.functions';
 import IApuesta from './interfaces/IApuesta.interface';
-
+import fs from 'fs';
 
 class EquipoService implements IApuesta {
 
     async test(authSession: JwtPayload): Promise<MessageResponse> {
+        console.log("__dirname", __dirname);
+        fs.readdirSync(__dirname+"/../routes").forEach(function(file) {
+            console.log("file", file);
+            //require('./' + name)(app);
+        });
+
         /*module.exports = function(app){
             fs.readdirSync(__dirname).forEach(function(file) {
                 if (file == "index.js") return;

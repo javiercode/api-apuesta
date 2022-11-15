@@ -5,11 +5,30 @@ import {MongoDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { ObjectID } from "mongodb";
 import { EstadoEnum } from "../configs/Config.enum";
+import UserRepository from "./User.Repository";
 
 
 class RolUserRepository {
     private repository = MongoDataSource.getRepository(RolUser);
 
+    public async  findByUser (username: string): Promise<ListPaginate |null>{
+        const oUser = await UserRepository.findByUsername(username);
+
+        let options={}
+        options={
+            where:{
+                codUsuario:oUser?.id,
+                estado:EstadoEnum.ACTIVO,
+            }
+        }
+
+        const [result,total] = await this.repository.findAndCount(options);
+        
+        return {
+            data: result,
+            count: total
+        }
+    };
     public async  findByDtoCount (params: RolUserDto): Promise<ListPaginate |null>{
         let options={}
         options={...params}

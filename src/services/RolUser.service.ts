@@ -103,8 +103,7 @@ class RolUserService implements IRolUser {
         }
         return res;
     }
-
-
+    
 }
 
 export default new RolUserService();

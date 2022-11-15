@@ -1,6 +1,7 @@
 import express, { application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import fs from 'fs';
 
 import loginRoutes from './routes/login.routes'
 import userRoutes from './routes/user.routes'

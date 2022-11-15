@@ -1,6 +1,7 @@
 export interface PartidoDto {
     local: string,
     visitante: string,
+    fecha: Date,
     marcadorLocal: number,
     marcadorVisitante: number,
     penalesLocal: number,
@@ -10,6 +11,7 @@ export interface PartidoDto {
 export interface PartidoEditDto {
     local: string,
     visitante: string,
+    fecha: Date,
     marcadorLocal: number,
     marcadorVisitante: number,
     penalesLocal: number,
