@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { GrupoDto } from './dto/GrupoDto';
 import { EstadoEnum } from '../configs/Config.enum';
@@ -6,35 +6,35 @@ import { EstadoEnum } from '../configs/Config.enum';
 @Entity('Grupo')
 export class Grupo{
     
-    @ObjectIdColumn()
-    public id: ObjectID
+    @PrimaryGeneratedColumn({name:"ID"})
+    public id: number
 
-    @Column()
+    @Column({name:"NOMBRE"})
     @Index({ unique: true })
     nombre:string
 
-    @Column()
+    @Column({name:"PRIVACIDAD"})
     privacidad:string
 
-    @Column()
+    @Column({name:"CLAVE"})
     clave:string
 
-    @Column()
+    @Column({name:"TIPO"})
     tipo:string
 
-    @Column()
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO})
     estado:string
 
-    @CreateDateColumn()
+    @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column()
+    @Column({name:"FECHA_MODIFICACION"})
     fechaModificacion:Date
     
-    @Column()
+    @Column({name:"USUARIO_REGISTRO"})
     usuarioRegistro:string
 
-    @Column()
+    @Column({name:"USUARIO_MODIFICACION"})
     usuarioModificacion:string
     
     constructor(params: GrupoDto = {} as GrupoDto){

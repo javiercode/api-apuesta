@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn,OneToOne,OneToMany} from 'typeorm';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn,OneToOne,OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { ObjectID } from 'mongodb';
 import { RolUserDto } from './dto/RolUserDto';
 import { EstadoEnum } from '../configs/Config.enum';
@@ -6,32 +6,32 @@ import { EstadoEnum } from '../configs/Config.enum';
 @Entity('RolUser')
 export class RolUser {
 
-    @ObjectIdColumn()
+    @PrimaryGeneratedColumn({name:"ID"})
     public id: ObjectID;
 
-    @Column()
+    @Column({name:"COD_ROL"})
     codRol:ObjectID;
 
-    @Column()
+    @Column({name:"OCD_USUARIO"})
     codUsuario:ObjectID;
 
-    @Column()
+    @Column({name:"COD_GRUPO"})
     codGrupo:ObjectID;
+    
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO})
+    estado:string
 
-    @CreateDateColumn()
+    @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column()
+    @Column({name:"FECHA_MODIFICACION"})
+    fechaModificacion:Date
+    
+    @Column({name:"USUARIO_REGISTRO"})
     usuarioRegistro:string
 
-    @Column()
-    fechaModificacion:Date
-
-    @Column()
-    usurioModificacion:string
-    
-    @Column({default:EstadoEnum.ACTIVO})
-    estado:string
+    @Column({name:"USUARIO_MODIFICACION"})
+    usuarioModificacion:string
 
     constructor(params: RolUserDto = {} as RolUserDto){
         this.codRol = new ObjectID(params.codRol),

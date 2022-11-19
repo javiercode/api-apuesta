@@ -30,7 +30,7 @@ export interface createRolUserForm {
 
 export interface UserDto {
     username:string,
-    name:string,
+    nombre:string,
     correo:string,
     password:string,
     codFacebook?:string,
@@ -39,7 +39,7 @@ export interface UserDto {
 
 export interface UserEditDto {
     username:string,
-    name:string,
+    nombre:string,
     correo:string,
     codFacebook?:string,
     estado?:string,
@@ -54,7 +54,7 @@ export interface UserEditPassDto {
 
 export const UserRegex: UserDto = {
     username:"^[a-zA-Z0-9]{3,30}$",
-    name:"^[a-zA-ZÀ-ÿ ]{3,30}$",
+    nombre:"^[a-zA-ZÀ-ÿ ]{3,30}$",
     correo:"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
     password:"^[\\w\\W\\d\\D\\t\\n]{6,30}$",
     codFacebook:"^[\\w\\W\\d\\D\\t\\n]{0,30}$",
