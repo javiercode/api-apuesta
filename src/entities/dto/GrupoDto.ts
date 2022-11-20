@@ -19,6 +19,6 @@ export interface GrupoEditDto {
 export const GrupoRegex: GrupoDto = {
     nombre: "^[a-zA-Z0-9_]{3,300}$",
     tipo: "^[A-Z]{1}$",
-    privacidad: "^[a-zA-Z0-9]{3,300}$",
+    privacidad: "^[a-zA-Z0-9]{1,3}$",
     clave:"^[a-zA-Z0-9]{3,300}$",
 };

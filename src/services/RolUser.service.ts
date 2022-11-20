@@ -70,7 +70,6 @@ class RolUserService implements IRolUser {
                 rolUsuario.codGrupo = oGrupo.id;
                 rolUsuario.codUsuario = oUser.id;
                 const oRolUser = await RolUserRepository.findByDto(rolUsuario);
-                console.log("oRolUser",oRolUser)
                 if(oRolUser==undefined){
                     rolUsuario.usuarioRegistro = authSession.username;
                     const oRolUsuario = RolUserRepository.save(rolUsuario);

@@ -17,8 +17,8 @@ enum TipoGrupoEnum {
 }
 
 enum TipoPrivacidadEnum {
-    PUBLICO = 'PUB',
-    PRIVADO = 'PR'
+    ABIERTO = 'A',
+    PRIVADO = 'P'
 }
 
 enum TypeKeyParamEnum {

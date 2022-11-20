@@ -25,7 +25,7 @@ export const MysqlDataSource = new DataSource({
     password: process.env.MYSQLDB_PSW,
     database: process.env.MYSQLDB,
     synchronize: false,
-    //synchronize: true,
+    logging: false,
     entities: [
         "./src/entities/*.ts"
     ]

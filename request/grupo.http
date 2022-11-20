@@ -24,9 +24,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre":"TESTING",
-    "privacidad":"PUB",
-    "tipo":"S",
+    "nombre":"TEST",
+    "privacidad":"O",
+    "tipo":"M",
     "clave":""
 }
 

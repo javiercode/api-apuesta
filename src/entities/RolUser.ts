@@ -11,7 +11,7 @@ export class RolUser {
     @Column({name:"COD_ROL"})
     codRol:number;
 
-    @Column({name:"OCD_USUARIO"})
+    @Column({name:"COD_USUARIO"})
     codUsuario:number;
 
     @Column({name:"COD_GRUPO"})

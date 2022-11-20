@@ -26,8 +26,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "rol":"JUG",
-    "grupo":"TESTING",
+    "rol":"ORG",
+    "grupo":"TEST",
     "usuario":"xaviercode"
 }
 

@@ -67,14 +67,14 @@ class RolUserRepository {
         return result
     };
 
-    /*public async  findInnerByUser (params: string): Promise<RolUser | null>{    
-        const user = await createQueryBuilder("user")
-        .innerJoin("user.photos", "photo")
-        .where("user.name = :name", { name: "Timber" })
-        .getOne()
+    // public async  findInnerByUser (params: string): Promise<[]>{    
+    //     const user = await createQueryBuilder("user")
+    //     .innerJoin("user.photos", "photo")
+    //     .where("user.name = :name", { name: "Timber" })
+    //     .get()
         
-        return result
-    };*/
+    //     return result
+    // };
     
     public async  desactivar (userId: string){       
         let options={}

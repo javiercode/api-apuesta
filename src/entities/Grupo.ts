@@ -8,11 +8,14 @@ export class Grupo{
     @PrimaryGeneratedColumn({name:"ID"})
     public id: number
 
+    @Column({name:"COD_PARTIDO"})
+    codPartido:number;
+
     @Column({name:"NOMBRE",length:200})
     @Index({ unique: true })
     nombre:string
 
-    @Column({name:"PRIVACIDAD",length:3})
+    @Column({name:"PRIVACIDAD",length:1})
     privacidad:string
 
     @Column({name:"CLAVE",length:200})
