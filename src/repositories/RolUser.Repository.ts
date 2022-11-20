@@ -1,7 +1,7 @@
-import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
+import { createQueryBuilder, DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
 import { RolUser } from "../entities/RolUser";
 import { RolUserDto } from "../entities/dto/RolUserDto"
-import {MongoDataSource} from "../configs/db";
+import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { ObjectID } from "mongodb";
 import { EstadoEnum } from "../configs/Config.enum";
@@ -9,7 +9,7 @@ import UserRepository from "./User.Repository";
 
 
 class RolUserRepository {
-    private repository = MongoDataSource.getRepository(RolUser);
+    private repository = MysqlDataSource.getRepository(RolUser);
 
     public async  findByUser (username: string): Promise<ListPaginate |null>{
         const oUser = await UserRepository.findByUsername(username);
@@ -40,13 +40,13 @@ class RolUserRepository {
         }
     };
 
-    public async  findByDto (params: RolUserDto): Promise<RolUser | null>{
+    public async  findByDto (params: RolUser): Promise<RolUser | null>{
         let options={}
         options={
             where:{
-                codRol:new ObjectID(params.codRol),
-                codUsuario:new ObjectID(params.codUsuario),
-                codGrupo:new ObjectID(params.codGrupo),
+                codRol:(params.codRol),
+                codUsuario:(params.codUsuario),
+                codGrupo:(params.codGrupo),
                 estado:EstadoEnum.ACTIVO,
             }
         }
@@ -66,6 +66,15 @@ class RolUserRepository {
         
         return result
     };
+
+    /*public async  findInnerByUser (params: string): Promise<RolUser | null>{    
+        const user = await createQueryBuilder("user")
+        .innerJoin("user.photos", "photo")
+        .where("user.name = :name", { name: "Timber" })
+        .getOne()
+        
+        return result
+    };*/
     
     public async  desactivar (userId: string){       
         let options={}

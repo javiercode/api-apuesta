@@ -1,5 +1,5 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import {MongoDataSource} from "../configs/db";
+import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { PartidoDto } from "../entities/dto/PartidoDto";
@@ -7,7 +7,7 @@ import { ObjectID } from "mongodb";
 import { Partido } from "../entities/Partido";
 
 class RolRepository {
-    private repository = MongoDataSource.getRepository(Partido);
+    private repository = MysqlDataSource.getRepository(Partido);
     private repository2:Repository<any>;
 
     public async  findByDto (params: PartidoDto): Promise<Partido |null>{

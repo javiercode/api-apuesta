@@ -1,31 +1,30 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, Unique, PrimaryGeneratedColumn } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, Unique, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from './dto/UserDto';
 import { EstadoEnum } from '../configs/Config.enum';
 
-@Entity('User')
+@Entity('user')
 export class User{
     
     @PrimaryGeneratedColumn({name:"ID"})
-    public id: ObjectID;
+    public id: number;
 
-    @Column({name:"USERNAME"})
+    @Column({name:"USERNAME",length:50})
     @Index({ unique: true })
     username:string
 
-    @Column({name:"NOMRE"})
+    @Column({name:"NOMRE",length:200})
     nombre:string
 
-    @Column({name:"CORREO"})
+    @Column({name:"CORREO",length:100})
     correo:string
 
-    @Column({name:"COD_FACEBOOK"})
+    @Column({name:"COD_FACEBOOK",length:300})
     codFacebook:string
 
-    @Column({name:"PASSWORD"})
+    @Column({name:"PASSWORD",length:300})
     password:string
 
-    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO})
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
 
     @CreateDateColumn({name:"FECHA_REGISTRO"})
@@ -34,10 +33,10 @@ export class User{
     @Column({name:"FECHA_MODIFICACION"})
     fechaModificacion:Date
     
-    @Column({name:"USUARIO_REGISTRO"})
+    @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column({name:"USUARIO_MODIFICACION"})
+    @Column({name:"USUARIO_MODIFICACION", length:50})
     usuarioModificacion:string
     
     constructor(params: UserDto = {} as UserDto){

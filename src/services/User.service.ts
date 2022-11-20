@@ -1,5 +1,5 @@
 import { IUser } from './interfaces/IUser.interface';
-import { MongoDataSource } from "../configs/db";
+import { MysqlDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { UserDto, UserEditDto, UserEditPassDto } from '../entities/dto/UserDto';
 import { ListPaginate } from '../entities/dto/GeneralDto';
@@ -81,7 +81,7 @@ class UserService implements IUser {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
             const oUser = new User(userDto);
-            const oRolUsuario = await MongoDataSource.manager.save(oUser);
+            const oRolUsuario = await MysqlDataSource.manager.save(oUser);
             res.success = true;
             res.message = "Usuario registrado";
             oUser.password = AuthService.encrypt(userDto.password);

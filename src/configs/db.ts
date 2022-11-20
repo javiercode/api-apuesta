@@ -1,20 +1,32 @@
 import { DataSource,createConnections } from "typeorm";
+import { User } from "../entities/User";
 
-export const MongoDataSource = new DataSource({
-    type: "mongodb",
-    url: process.env.MONGO_URL,
-    database: process.env.MONGO_DATABASE,
-    //synchronize: false,
-    synchronize: true,
-    logging: false,
+export const MysqlDataSource = new DataSource({
+    // "type": "mysql",
+    // "host": process.env.MYSQLDB_HOST,
+    // "port": Number(process.env.MYSQLDB_PORT),
+    // "username": process.env.MYSQLDB_USR,
+    // "password": process.env.MYSQLDB_PSW,
+    // "database": process.env.MYSQLDB,
+    // "synchronize": true,
+    // "logging": false,
+    // "ssl": false,
+    // "extra": {
+    //     ssl: {
+    //         rejectUnauthorized: true,
+    //     },
+    // },
+
+
+    type: 'mysql',
+    host: process.env.MYSQLDB_HOST,
+    port: Number(process.env.MYSQLDB_PORT),
+    username: process.env.MYSQLDB_USR,
+    password: process.env.MYSQLDB_PSW,
+    database: process.env.MYSQLDB,
+    synchronize: false,
+    //synchronize: true,
     entities: [
         "./src/entities/*.ts"
-    ],
-    subscribers: [
-        // "src/subscriber/*.js"
-    ],
-    migrations: [
-        // "src/migration/*.js"
-    ],
+    ]
 })
-

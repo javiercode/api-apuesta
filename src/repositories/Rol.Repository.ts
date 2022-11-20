@@ -1,5 +1,5 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import {MongoDataSource} from "../configs/db";
+import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { Rol } from "../entities/Rol";
@@ -8,7 +8,7 @@ import { ObjectID } from "mongodb";
 
 
 class RolRepository {
-    private repository = MongoDataSource.getRepository(Rol);
+    private repository = MysqlDataSource.getRepository(Rol);
 
     public async findByDto (params: RolDto): Promise<Rol |null>{
         let options={}

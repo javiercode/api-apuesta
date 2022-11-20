@@ -1,4 +1,3 @@
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { EquipoEditDto, EquipoDto } from '../entities/dto/EquipoDto';
 import { Equipo} from '../entities/Equipo';

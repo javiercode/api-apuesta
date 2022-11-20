@@ -1,6 +1,5 @@
 
 import { IAuth } from './interfaces/IAuth.interface';
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
 import UsersService from './User.service';
@@ -77,7 +76,7 @@ class AuthService implements IAuth {
     encrypt(password: string): string {
         let salt = process.env.PASS_SALT + "";
         let hash = crypto.pbkdf2Sync(password, salt,
-            1000, 64, `sha512`).toString(`hex`);
+            300, 64, `sha512`).toString(`hex`);
         return hash;
     }
 }

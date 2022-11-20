@@ -85,7 +85,7 @@ function toIFormValidateCreate(dataForm: UserDto| UserEditDto): UserDto|UserEdit
     if(dataForm.type=='dto'){
         res = {
             username: dataForm.username,
-            name: dataForm.nombre,
+            nombre: dataForm.nombre,
             correo: dataForm.correo,
             codFacebook: dataForm.codFacebook,
             password: dataForm.password,
@@ -93,13 +93,12 @@ function toIFormValidateCreate(dataForm: UserDto| UserEditDto): UserDto|UserEdit
     }else{
         res = {
             username: dataForm.username,
-            name: dataForm.nombre,
+            nombre: dataForm.nombre,
             correo: dataForm.correo,
             codFacebook: dataForm.codFacebook,
         };
     }
     return res;
 }
-
 
 export default new UserController();

@@ -1,6 +1,6 @@
 export interface ApuestaDto {
-    codPartido:string,
-    codRolUser:string,
+    codPartido:number,
+    codRolUser:number,
     local:number,
     visitante:number,
     localPenal:number,
@@ -10,8 +10,8 @@ export interface ApuestaDto {
 }
 
 export interface ApuestaEditDto {
-    codPartido:string,
-    codRolUser:string,
+    codPartido:number,
+    codRolUser:number,
     local:number,
     visitante:number,
     localPenal:number,

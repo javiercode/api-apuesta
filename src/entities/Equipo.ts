@@ -1,19 +1,18 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { EquipoDto } from './dto/EquipoDto';
 import { EstadoEnum } from '../configs/Config.enum';
 
-@Entity('Equipo')
+@Entity('equipo')
 export class Equipo{
     
     @PrimaryGeneratedColumn({name:"ID"})
     public id: number
 
-    @Column({name:"NOMBRE"})
+    @Column({name:"NOMBRE",length:200})
     @Index({ unique: true })
     nombre:string
 
-    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO})
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
 
     @CreateDateColumn({name:"FECHA_REGISTRO"})
@@ -22,10 +21,10 @@ export class Equipo{
     @Column({name:"FECHA_MODIFICACION"})
     fechaModificacion:Date
     
-    @Column({name:"USUARIO_REGISTRO"})
+    @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column({name:"USUARIO_MODIFICACION"})
+    @Column({name:"USUARIO_MODIFICACION", length:50})
     usuarioModificacion:string
     
     constructor(params: EquipoDto = {} as EquipoDto){

@@ -1,6 +1,5 @@
 import { Request, response, Response } from "express";
 import { getMongoRepository } from 'typeorm';
-import {MongoDataSource} from "../configs/db";
 import jwt from 'jsonwebtoken';
 import {encodeToken} from '../configs/TokenMiddleware'
 import {MessageResponse} from '../entities/dto/GeneralDto';

@@ -1,19 +1,18 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoEnum } from '../configs/Config.enum';
 import { ApuestaDto } from './dto/ApuestaDto';
 
-@Entity('Apuesta')
+@Entity('apuesta')
 export class Apuesta{
     
     @PrimaryGeneratedColumn({name:"ID"})
     id: number
 
     @Column({name:"COD_PARTIDO"})
-    codPartido:ObjectID
+    codPartido:number
 
     @Column({name:"COD_ROL_USER"})
-    codRolUser:ObjectID
+    codRolUser:number
 
     @Column({name:"LOCAL"})
     local:number
@@ -27,7 +26,7 @@ export class Apuesta{
     @Column({name:"VISITANTE_PENAL"})
     visitantePenal:number
 
-    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO})
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO, length:1})
     estado:string
 
     @CreateDateColumn({name:"FECHA_REGISTRO"})
@@ -36,15 +35,15 @@ export class Apuesta{
     @Column({name:"FECHA_MODIFICACION"})
     fechaModificacion:Date
     
-    @Column({name:"USUARIO_REGISTRO"})
+    @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column({name:"USUARIO_MODIFICACION"})
+    @Column({name:"USUARIO_MODIFICACION", length:50})
     usuarioModificacion:string
     
     constructor(params: ApuestaDto = {} as ApuestaDto){
-        this.codPartido = new ObjectID(params.codPartido);
-        this.codRolUser = new ObjectID(params.codRolUser);
+        this.codPartido = (params.codPartido);
+        this.codRolUser = (params.codRolUser);
         this.local = params.local;
         this.visitante = params.visitante;
         this.localPenal = params.localPenal;

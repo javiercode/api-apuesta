@@ -1,11 +1,11 @@
 import { IRolUser } from './interfaces/IRolUser.interface';
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { RolUserDto } from '../entities/dto/RolUserDto';
 import { RolUser } from '../entities/RolUser';
 import RolUserRepository from '../repositories/RolUser.Repository';
 import RolRepository from '../repositories/Rol.Repository';
 import GrupoRepository from '../repositories/Grupo.Repository';
+import UserRepository from '../repositories/User.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
 
 
@@ -60,21 +60,25 @@ class RolUserService implements IRolUser {
     async create(dto: RolUserDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
-            const oRol = await RolRepository.findByCodigo(dto.codRol);
-            const oGrupo = await GrupoRepository.findByNombre(dto.codGrupo);
+            const oRol = await RolRepository.findByCodigo(dto.rol);
+            const oGrupo = await GrupoRepository.findByNombre(dto.grupo);
+            const oUser = await UserRepository.findByUsername(dto.usuario);
             
-            if ( oRol && oGrupo) {
-                dto.codRol = oRol.id.toHexString();
-                dto.codGrupo = oGrupo.id.toHexString();
+            if ( oRol && oGrupo && oUser) {
                 const rolUsuario = new RolUser(dto);
-                const oRolUser = await RolUserRepository.findByDto(dto);
+                rolUsuario.codRol = oRol.id;
+                rolUsuario.codGrupo = oGrupo.id;
+                rolUsuario.codUsuario = oUser.id;
+                const oRolUser = await RolUserRepository.findByDto(rolUsuario);
                 console.log("oRolUser",oRolUser)
                 if(oRolUser==undefined){
                     rolUsuario.usuarioRegistro = authSession.username;
+                    const oRolUsuario = RolUserRepository.save(rolUsuario);
                     res.success = true;
                     res.message = "Rol registrado";
-                    const oRolUsuario = RolUserRepository.save(rolUsuario);
                     res.data = oRolUsuario;
+                }else{
+                    res.message = "Rol duplicado";
                 }
             } else {
                 res.message = "El Rol no existe!";
