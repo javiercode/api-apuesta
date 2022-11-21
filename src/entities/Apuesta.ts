@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoEnum } from '../configs/Config.enum';
 import { ApuestaDto } from './dto/ApuestaDto';
 

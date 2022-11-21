@@ -2,7 +2,7 @@
 # @api = http://192.168.27.141:9091
 #@api = http://192.168.27.141:4000/micliente/api/v3
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2ODkyMTAyNSwiZXhwIjoxNjY4OTY0MjI1fQ.2pRqO4mUSZhdWSAmrLIrmd-JtNaHfIxdnGYfy3lwU0g
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2ODk4NzY4NCwiZXhwIjoxNjY5MDMwODg0fQ.YbmEPyWvmL7TlchPdlWqDyZUkUb3ED_v20OYbDC0uSk
 
 ### Login
 POST {{api}}/login
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 
 ### list RolUser
-GET {{api}}/roluser/list/0/10
+GET {{api}}/roluser/list/xaviercode
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

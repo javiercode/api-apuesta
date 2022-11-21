@@ -18,26 +18,38 @@ class AuthService implements IAuth {
         try {
             const verifyUser = await this.verifyCredential(username, password);
             if(verifyUser.success){
-                const usuarioXSucursal = await UsersService.getUsuario(username);
-                const userRol = await RolUserRepository.findByUser(username);
-                if (usuarioXSucursal.length >= 1) {
-                    result = {
-                        success: true,
-                        message: 'Sesion iniciada',
-                        code: 0,
-                        data: {
-                            'NOMBRE': verifyUser.data?.name,
-                            'CORREO': verifyUser.data?.correo,
-                            'ROL_USER': userRol?.data,
-                        }
-                    };
-                } else {
-                    result.message = "Usuario no encontrado";
-                }
+                const userRolDetalle = await RolUserRepository.findDetalleByUser(username);
+                result = {
+                    success: true,
+                    message: 'Sesion iniciada',
+                    code: 0,
+                    data: userRolDetalle
+                };
             }else{
                 result.success = verifyUser.success
                 result.message = verifyUser.message
             }
+        } catch (error) {
+            console.error(error);
+        }
+        return result;
+
+    }
+
+    async getMetadata(username: string): Promise<MessageResponse> {
+        let result: MessageResponse = {
+            success: false,
+            message: 'Sin regitros',
+            code: 0,
+        }
+        try {
+            const userRolDetalle = await RolUserRepository.findDetalleByUser(username);
+            result = {
+                success: true,
+                message: 'Obtención exitosa!',
+                code: 0,
+                data: userRolDetalle
+            };
         } catch (error) {
             console.error(error);
         }

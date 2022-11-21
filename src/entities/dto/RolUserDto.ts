@@ -1,3 +1,15 @@
+export interface SessionDto {
+    id:number,
+    codigo:string,
+    username:string,
+    rol:string,
+    correo:string,
+    grupo:string,
+    tipo:string,
+    privacidad:string,
+    codPartido:string
+}
+
 export interface RolUserDto {
     rol:string,
     usuario:string,
@@ -5,6 +17,7 @@ export interface RolUserDto {
     usuarioRegistro?: string,
     fechaRegistro?: Date,
 }
+
 export interface RolUserEditDto {
     rol:string,
     usuario:string,

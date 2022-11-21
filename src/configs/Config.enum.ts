@@ -5,9 +5,8 @@ enum RolesEnum {
 }
 
 enum EstadoEnum {
-    FINALIZADO = 'F',
     ACTIVO = 'A',
-    PROCESO = 'P',
+    PENDIENTE = 'P',
     ELIMINADO = 'D',
 }
 

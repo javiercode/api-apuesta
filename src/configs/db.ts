@@ -1,4 +1,10 @@
 import { DataSource,createConnections } from "typeorm";
+import { Apuesta } from "../entities/Apuesta";
+import { Equipo } from "../entities/Equipo";
+import { Grupo } from "../entities/Grupo";
+import { Partido } from "../entities/Partido";
+import { Rol } from "../entities/Rol";
+import { RolUser } from "../entities/RolUser";
 import { User } from "../entities/User";
 
 export const MysqlDataSource = new DataSource({
@@ -25,8 +31,14 @@ export const MysqlDataSource = new DataSource({
     password: process.env.MYSQLDB_PSW,
     database: process.env.MYSQLDB,
     synchronize: false,
-    logging: false,
     entities: [
-        "./src/entities/*.ts"
+        // "./src/entities/*.ts"
+Apuesta,
+Equipo,
+Grupo,
+Partido,
+Rol,
+RolUser,
+User,
     ]
 })

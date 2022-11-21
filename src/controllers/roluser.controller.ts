@@ -2,6 +2,7 @@ import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
 import jwt from 'jsonwebtoken';
 import RolUsersService from '../services/RolUser.service';
+import AuthService from '../services/Auth.service';
 import { RolUserDto, RolUserRegex } from '../entities/dto/RolUserDto';
 
 import { MessageResponse } from "../entities/dto/GeneralDto";
@@ -13,6 +14,16 @@ class RolUserController {
     public async test(req: Request, res: Response) {
         const { page, limit } = req.params;
         const result = await RolUsersService.test(getAuthUser(req));
+        return res.status(200).send(result);
+    }
+
+    public async listRoles(req: Request, res: Response) {
+        const username = req.params.username;
+        const resultPage = validateParams(username,TypeKeyParamEnum.USER)
+        let result;
+        if(resultPage.success ){
+            result = await AuthService.getMetadata(username);
+        }
         return res.status(200).send(result);
     }
 
