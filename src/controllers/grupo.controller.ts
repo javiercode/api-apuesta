@@ -1,6 +1,7 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
 import GrupoService from '../services/Grupo.service';
+import RolUserService from '../services/RolUser.service';
 import { MessageResponse } from "../entities/dto/GeneralDto";
 import { TypeKeyParamEnum } from "../configs/Config.enum";
 import { validateParams } from "../configs/General.functions";
@@ -18,6 +19,15 @@ class GrupoController {
         const { page, limit } = req.params;
         let result;
         result = await GrupoService.listAll();
+        return res.status(200).send(result);
+    }
+
+    public async listByUser(req: Request, res: Response) {
+        const { username } = req.params;
+        let result = validateParams(username,TypeKeyParamEnum.USER)
+        if(result.success){
+            result = await RolUserService.listGrupo(username);
+        }
         return res.status(200).send(result);
     }
 

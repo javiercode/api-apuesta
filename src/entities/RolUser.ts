@@ -1,6 +1,9 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne,OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne,OneToMany, PrimaryGeneratedColumn, JoinColumn} from 'typeorm';
 import { RolUserDto } from './dto/RolUserDto';
 import { EstadoEnum } from '../configs/Config.enum';
+import { Grupo } from './Grupo';
+import { Rol } from './Rol';
+import { User } from './User';
 
 @Entity('rol_user')
 export class RolUser {
@@ -31,6 +34,18 @@ export class RolUser {
 
     @Column({name:"USUARIO_MODIFICACION", length:50})
     usuarioModificacion:string
+
+    @OneToOne(() => Grupo)
+    @JoinColumn({name:'COD_GRUPO'})
+    grupo: Grupo
+
+    @OneToOne(() => Rol)
+    @JoinColumn({name:'COD_ROL'})
+    rol: Rol
+
+    @OneToOne(() => User)
+    @JoinColumn({name:'COD_USUARIO'})
+    user: User
 
     constructor(params: RolUserDto = {} as RolUserDto){
         this.usuarioRegistro = params.usuarioRegistro || this.usuarioRegistro;

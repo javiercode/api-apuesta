@@ -6,6 +6,7 @@ import { ListPaginate } from "../entities/dto/GeneralDto"
 import { ObjectID } from "mongodb";
 import { EstadoEnum } from "../configs/Config.enum";
 import UserRepository from "./User.Repository";
+import { Grupo } from "../entities/Grupo";
 
 
 class RolUserRepository {
@@ -80,6 +81,32 @@ class RolUserRepository {
         
          return query;
      };
+
+    public async  findGrupoByUser (params:string): Promise<Grupo[]>{
+        const rolUsers = await this.repository
+            .createQueryBuilder("RolUser")
+            //.createQueryBuilder("user")
+            .leftJoinAndSelect("RolUser.grupo", "grupo")
+            .leftJoinAndSelect("RolUser.user", "user")
+            //.where("RolUser.codUsuario = :codUser", { codUser: params })
+            .where("user.username = :codUser", { codUser: params })
+            .getMany();
+
+        return rolUsers.map(tes=>{
+            return tes.grupo;
+        })
+    };
+    public async  findAllByUser (params:string): Promise<RolUser[]>{
+        const rolUsers = await this.repository
+            .createQueryBuilder("RolUser")
+            .leftJoinAndSelect("RolUser.grupo", "grupo")
+            .leftJoinAndSelect("RolUser.user", "user")
+            .leftJoinAndSelect("RolUser.rol", "rol")
+            .where("user.username = :codUser", { codUser: params })
+            .getMany();
+
+        return rolUsers;
+    };
     
     public async  desactivar (userId: string){       
         let options={}
@@ -88,7 +115,7 @@ class RolUserRepository {
         return firstUser;
     };
     
-    public async  actualizar (userId:string, param: RolUserDto){
+    public async  actualizar (userId:string, param: RolUser){
         let options={}
         options={userId}
         const firstUser = await this.repository.update(options,param);
