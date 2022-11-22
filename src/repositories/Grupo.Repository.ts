@@ -73,6 +73,20 @@ class RolRepository {
     };
 
 
+    public async  findByUser (): Promise<ListPaginate>{
+        let options={}
+        options={
+            where:{
+                estado:EstadoEnum.ACTIVO,
+            }
+        }
+        const [result,total] = await this.repository.findAndCount(options);        
+        return {
+            data: result,
+            count: total
+        }
+    };
+
     public async  listAll (): Promise<ListPaginate>{
         let options={}
         options={
