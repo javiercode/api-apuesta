@@ -1,7 +1,7 @@
 @api = http://localhost:4000/apuesta/api/v1/partido
 # @api = http://192.168.27.141:9091
 #@api = http://192.168.27.141:4000/micliente/api/v3
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2Njg0ODA5NzUsImV4cCI6MTY2ODUyNDE3NX0.hua6wsArz9YYUJWlNP3-vrTa8gT9ByJW-KNOS4ZaANA
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2OTI2NDk1NCwiZXhwIjoxNjY5MzA4MTU0fQ.2GUiEF8C6NqdiB5TGtYmxnlqs5ALalp1ZwehDq6aqVQ
 
 ### Login
 POST {{api}}/login
@@ -24,9 +24,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "local":"6371d827b53b0c326c434b87",
-    "visitante":"637310fc1ef2c2335c6d5ddd",
-    "fecha":"15/11.2022 14:10:00"
+    "local":2,
+    "visitante":1,
+    "fecha":"24/11/2022 18:00:00"
 }
 
 ### Edit

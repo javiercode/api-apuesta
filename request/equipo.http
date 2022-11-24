@@ -1,6 +1,6 @@
 @api = http://localhost:4000/apuesta/api/v1/equipo
 @apiLogin = http://localhost:4000/apuesta/api/v1/login
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2Njg0ODUzMzAsImV4cCI6MTY2ODUyODUzMH0.zmfiUfi8TLln3K2mnerZkx_wZp8M_Jwm1AkPPFnqr68
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2OTI2NDk1NCwiZXhwIjoxNjY5MzA4MTU0fQ.2GUiEF8C6NqdiB5TGtYmxnlqs5ALalp1ZwehDq6aqVQ
 
 ### Login
 POST {{apiLogin}}
@@ -23,7 +23,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "nombre":"Ecuador"
+    "nombre":"QATAR"
 }
 
 ### Edit

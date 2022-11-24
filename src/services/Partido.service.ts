@@ -69,7 +69,7 @@ class PartidoService implements IPartido {
                 res.message = "Partido registrado";
                 res.data = oPartido;
             }else{
-                res.message = "Nombre de partido duplicado";
+                res.message = "Partido duplicado";
             }
             
         } catch (error) {

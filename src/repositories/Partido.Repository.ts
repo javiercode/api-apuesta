@@ -8,11 +8,17 @@ import { Partido } from "../entities/Partido";
 
 class RolRepository {
     private repository = MysqlDataSource.getRepository(Partido);
-    private repository2:Repository<any>;
 
     public async  findByDto (params: PartidoDto): Promise<Partido |null>{
         let options={}
-        options={...params}
+        options={
+            where: {
+                local: params.local,
+                visitante: params.visitante,
+                estado: EstadoEnum.ACTIVO
+            },
+        }
+        
         const result = await this.repository.findOne(options);
         return result;
     };
