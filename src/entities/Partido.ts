@@ -1,6 +1,7 @@
 import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { PartidoDto } from './dto/PartidoDto';
 import { EstadoEnum } from '../configs/Config.enum';
+import { Equipo } from './Equipo';
 
 @Entity('partido')
 export class Partido{
@@ -9,10 +10,10 @@ export class Partido{
     public id: number
 
     @Column({name:"LOCAL"})
-    local: number
+    codLocal: number
 
     @Column({name:"VISITANTE"})
-    visitante: number
+    codVisitante: number
 
     @Column({name:"FECHA"})
     fecha: Date
@@ -43,10 +44,18 @@ export class Partido{
 
     @Column({name:"USUARIO_MODIFICACION", length:50})
     usuarioModificacion:string
+
+    @OneToOne(() => Equipo)
+    @JoinColumn({name:'LOCAL'})
+    local: Equipo
+
+    @OneToOne(() => Equipo)
+    @JoinColumn({name:'VISITANTE'})
+    visitante: Equipo
     
     constructor(params: PartidoDto = {} as PartidoDto){
-        this.local= (params.local);
-        this.visitante= (params.visitante);
+        this.codLocal= (params.codLocal);
+        this.codVisitante= (params.codVisitante);
         this.fecha= params.fecha;
         this.marcadorLocal= params.marcadorLocal;
         this.marcadorVisitante= params.marcadorVisitante;

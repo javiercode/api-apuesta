@@ -29,6 +29,8 @@ enum TypeKeyParamEnum {
     PASSWORD = 'password',
     PARAM_BUSQUEDA = 'busqueda',
     TIPO_TAREA = 'Tipo tarea',
+    DATETIME = 'Fecha y Hora',
+    DATE = 'Fecha',
 }
 
 export  {TypeKeyParamEnum,RolesEnum, EstadoEnum}

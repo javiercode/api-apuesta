@@ -96,6 +96,7 @@ class RolUserRepository {
             return tes.grupo;
         })
     };
+    
     public async  findAllByUser (params:string): Promise<RolUser[]>{
         const rolUsers = await this.repository
             .createQueryBuilder("RolUser")

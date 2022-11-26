@@ -1,20 +1,22 @@
-import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
+import { Between, DeleteResult, EntityRepository, LessThanOrEqual, Repository, UpdateResult } from "typeorm";
 import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { PartidoDto } from "../entities/dto/PartidoDto";
 import { ObjectID } from "mongodb";
 import { Partido } from "../entities/Partido";
+import { getFecha } from "../configs/General.functions";
 
-class RolRepository {
+class PartidoRepository {
     private repository = MysqlDataSource.getRepository(Partido);
 
-    public async  findByDto (params: PartidoDto): Promise<Partido |null>{
+    public async  findByDto (params: PartidoDto | Partido): Promise<Partido |null>{
         let options={}
         options={
             where: {
-                local: params.local,
-                visitante: params.visitante,
+                local: params.codLocal,
+                visitante: params.codVisitante,
+                fecha:params.fecha,
                 estado: EstadoEnum.ACTIVO
             },
         }
@@ -89,10 +91,46 @@ class RolRepository {
         }
     };
 
+    public async findAllByDate (fecha: Date): Promise<ListPaginate>{
+        let options={}
+        var startDate = getFecha(fecha);
+        startDate.setHours(0, 0, 0, 0);
+        var endDate = getFecha(fecha);
+        endDate.setHours(23, 59, 59, 999);
+        const [result,total] = await this.repository.findAndCount({
+            where:{
+                fecha:Between(startDate,endDate),
+            },
+            
+        });        
+        return {
+            data: result,
+            count: total
+        }
+    };
+
+    public async  findByDate (fecha:Date): Promise<Partido[]>{
+        var startDate = getFecha(fecha);
+        startDate.setHours(0, 0, 0, 0);
+        var endDate = getFecha(fecha);
+        endDate.setHours(23, 59, 59, 999);
+
+        const rolUsers = await this.repository
+            .createQueryBuilder("Partido")
+            .leftJoinAndSelect("Partido.local", "local")
+            .leftJoinAndSelect("Partido.visitante", "visitante")
+            .where("Partido.fecha >= :startDate", { startDate: startDate })
+            .andWhere("Partido.fecha <= :endDate", { endDate: endDate })
+            .getMany();
+
+        return rolUsers;
+    };
+    
+
     public async save(params: Partido): Promise<Partido> {
         const oRol = await this.repository.save(params);
         return oRol;
     };
 
 }
-export default new RolRepository();
+export default new PartidoRepository();

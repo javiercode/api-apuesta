@@ -54,6 +54,12 @@ export function validateParams(value: string,type:string): MessageResponse {
             case TypeKeyParamEnum.TIPO_TAREA:
                 regex = new RegExp("^[A-Z]{1}$");
             break;
+            case TypeKeyParamEnum.DATETIME:
+                regex = new RegExp("^[0-9 :/]{19}$");
+            break;
+            case TypeKeyParamEnum.DATE:
+                regex = new RegExp("^[0-9 /]{10}$");
+            break;
         }
         if (regex.test(value.toString())) {
             res.success=true;

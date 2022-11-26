@@ -32,6 +32,22 @@ class PartidoService implements IPartido {
         return res;
     }
 
+    async findByDate(fecha:string): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
+        try {
+            const data = await PartidoRepository.findByDate(getFecha(fecha));
+            res.data = data;
+            res.success = true;
+            res.message = "Obtención exitosa";
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error(error);
+            }
+        }
+
+        return res;
+    }
+
     async edit(id: string, dto: PartidoEditDto, authSession: JwtPayload): Promise<MessageResponse> {
         const res: MessageResponse = { success: false, message: "Error de registro", code: 0 };
         try {
@@ -62,7 +78,8 @@ class PartidoService implements IPartido {
             oPartido.usuarioRegistro = authSession.username;
             oPartido.fechaRegistro = getFecha(new Date())
             oPartido.fecha = getFecha(dto.fecha)
-            const oPartidoFind = await PartidoRepository.findByDto(dto);
+            const oPartidoFind = await PartidoRepository.findByDto(oPartido);
+
             if(!oPartidoFind){
                 oPartido = await PartidoRepository.save(oPartido);
                 res.success = true;
