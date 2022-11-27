@@ -7,6 +7,7 @@ import RolRepository from '../repositories/Rol.Repository';
 import GrupoRepository from '../repositories/Grupo.Repository';
 import UserRepository from '../repositories/User.Repository';
 import { MessageResponse } from '../entities/dto/GeneralDto'
+import { RolesEnum } from '../configs/Config.enum';
 
 
 class RolUserService implements IRolUser {
@@ -80,10 +81,10 @@ class RolUserService implements IRolUser {
             const oGrupo = await GrupoRepository.findByNombre(dto.grupo);
             const oUser = await UserRepository.findByUsername(dto.usuario);
             
-            if ( oRol && oGrupo && oUser) {
+            if(oRol && oUser && ((oGrupo && dto.rol!= RolesEnum.ADMIN) || (dto.rol== RolesEnum.ADMIN))){
                 const rolUsuario = new RolUser(dto);
                 rolUsuario.codRol = oRol.id;
-                rolUsuario.codGrupo = oGrupo.id;
+                rolUsuario.codGrupo = oGrupo?.id || 0;
                 rolUsuario.codUsuario = oUser.id;
                 const oRolUser = await RolUserRepository.findByDto(rolUsuario);
                 if(oRolUser==undefined){

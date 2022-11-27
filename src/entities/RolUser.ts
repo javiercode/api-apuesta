@@ -26,16 +26,16 @@ export class RolUser {
     @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column({name:"FECHA_MODIFICACION"})
+    @Column({name:"FECHA_MODIFICACION",nullable:true})
     fechaModificacion:Date
     
     @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column({name:"USUARIO_MODIFICACION", length:50})
+    @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
 
-    @OneToOne(() => Grupo)
+    /*@OneToOne(() => Grupo)
     @JoinColumn({name:'COD_GRUPO'})
     grupo: Grupo
 
@@ -45,7 +45,7 @@ export class RolUser {
 
     @OneToOne(() => User)
     @JoinColumn({name:'COD_USUARIO'})
-    user: User
+    user: User*/
 
     constructor(params: RolUserDto = {} as RolUserDto){
         this.usuarioRegistro = params.usuarioRegistro || this.usuarioRegistro;

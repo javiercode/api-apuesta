@@ -32,6 +32,12 @@ export const MysqlDataSource = new DataSource({
     database: process.env.MYSQLDB,
     synchronize: false,
     logging: false,
+    ssl:false,
+    extra: {
+         ssl: {
+             rejectUnauthorized: true,
+         },
+     },
     entities: [
         // "./src/entities/*.ts"
 Apuesta,

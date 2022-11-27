@@ -25,10 +25,10 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "username":"javier",
-    "name":"Javier Elvis",
+    "username":"xaviercode",
+    "nombre":"Javier Elvis",
     "correo":"javier.azote@gmail.com",
-    "password":"123456",
+    "password":"radames",
     "codFacebook":""
 }
 

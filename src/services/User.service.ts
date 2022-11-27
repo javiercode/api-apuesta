@@ -99,10 +99,11 @@ class UserService implements IUser {
             oUser.password = AuthService.encrypt(userDto.password);
             const oUserFind = await UserRepository.findByUsername(userDto.username);
             if(!oUserFind){
+                oUser.usuarioRegistro = userDto.username;
                 oUser = await UserRepository.save(oUser);
                 res.message = "Usuario registrado";
                 res.success = true;
-                res.data = oUser;
+                res.data = userDto;
             }else{
                 res.message = "Username ya registrado";
             }

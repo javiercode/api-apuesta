@@ -24,13 +24,13 @@ export class Rol{
     @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column({name:"FECHA_MODIFICACION"})
+    @Column({name:"FECHA_MODIFICACION",nullable:true})
     fechaModificacion:Date
     
     @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column({name:"USUARIO_MODIFICACION", length:50})
+    @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
     
     constructor(params: RolDto = {} as RolDto){

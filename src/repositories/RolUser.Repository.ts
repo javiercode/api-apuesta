@@ -92,9 +92,10 @@ class RolUserRepository {
             .where("user.username = :codUser", { codUser: params })
             .getMany();
 
-        return rolUsers.map(tes=>{
+        /*return rolUsers.map(tes=>{
             return tes.grupo;
-        })
+        })*/
+        return []
     };
     
     public async  findAllByUser (params:string): Promise<RolUser[]>{
