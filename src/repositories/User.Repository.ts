@@ -2,11 +2,11 @@ import { DeleteResult, EntityRepository,  Like,  ObjectID,  UpdateResult, Insert
 import { User } from "../entities/User";
 import { UserDto, UserEditDto, UserEditPassDto  } from "../entities/dto/UserDto"
 import { ListPaginate } from "../entities/dto/GeneralDto"
-import { MongoDataSource } from "../configs/db";
+import { MysqlDataSource } from "../configs/db";
 import { EstadoEnum } from "../configs/Config.enum";
 
 class UserRepository{
-    private repository = MongoDataSource.getRepository(User);
+    private repository = MysqlDataSource.getRepository(User);
 
     public async findByDto(params: UserDto): Promise<User | null> {
         let options = {};
@@ -81,7 +81,7 @@ class UserRepository{
     };
 
     public async deleteUser(params: User): Promise<DeleteResult> {
-        const firstUser = await this.repository.delete(new ObjectID(params.id.toHexString()));
+        const firstUser = await this.repository.delete((params.id));
         return firstUser;
     };
 

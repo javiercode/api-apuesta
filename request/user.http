@@ -8,7 +8,7 @@ POST {{api}}/login
 Content-Type: application/json
 
 {
-    "username":"xaviercode",
+    "username":"javier",
     "password":"123456"
 }
 
@@ -26,10 +26,10 @@ Authorization: Bearer {{token}}
 
 {
     "username":"xaviercode",
-    "name":"Javier Elvis",
+    "nombre":"Javier Elvis",
     "correo":"javier.azote@gmail.com",
-    "password":"123456",
-    "codFacebook":"kjjhfs7fsdf8sdfsd9f"
+    "password":"radames",
+    "codFacebook":""
 }
 
 ### Edit user

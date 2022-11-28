@@ -1,4 +1,3 @@
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { PartidoEditDto, PartidoDto } from '../entities/dto/PartidoDto';
 import { Partido} from '../entities/Partido';
@@ -24,6 +23,22 @@ class PartidoService implements IPartido {
             res.success = true;
             res.message = "Obtención exitosa";
             res.total = query.count || 0;
+        } catch (error) {
+            if (error instanceof TypeError) {
+                console.error(error);
+            }
+        }
+
+        return res;
+    }
+
+    async findByDate(fecha:string): Promise<MessageResponse> {
+        const res: MessageResponse = { success: false, message: "Error de obtencion de datos", code: 0 };
+        try {
+            const data = await PartidoRepository.findByDate(getFecha(fecha));
+            res.data = data;
+            res.success = true;
+            res.message = "Obtención exitosa";
         } catch (error) {
             if (error instanceof TypeError) {
                 console.error(error);
@@ -63,14 +78,15 @@ class PartidoService implements IPartido {
             oPartido.usuarioRegistro = authSession.username;
             oPartido.fechaRegistro = getFecha(new Date())
             oPartido.fecha = getFecha(dto.fecha)
-            const oPartidoFind = await PartidoRepository.findByDto(dto);
+            const oPartidoFind = await PartidoRepository.findByDto(oPartido);
+
             if(!oPartidoFind){
                 oPartido = await PartidoRepository.save(oPartido);
                 res.success = true;
                 res.message = "Partido registrado";
                 res.data = oPartido;
             }else{
-                res.message = "Nombre de partido duplicado";
+                res.message = "Partido duplicado";
             }
             
         } catch (error) {

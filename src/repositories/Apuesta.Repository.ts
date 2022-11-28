@@ -1,5 +1,5 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import {MongoDataSource} from "../configs/db";
+import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { ApuestaDto } from "../entities/dto/ApuestaDto";
@@ -8,7 +8,7 @@ import { Apuesta } from "../entities/Apuesta";
 
 
 class ApuestaRepository {
-    private repository = MongoDataSource.getRepository(Apuesta);
+    private repository = MysqlDataSource.getRepository(Apuesta);
 
     public async  findByDto (params: ApuestaDto): Promise<ListPaginate |null>{
         let options={}

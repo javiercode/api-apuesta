@@ -1,54 +1,53 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import {Column, Entity, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { EstadoEnum } from '../configs/Config.enum';
 import { ApuestaDto } from './dto/ApuestaDto';
 
-@Entity('Apuesta')
+@Entity('apuesta')
 export class Apuesta{
     
-    @ObjectIdColumn()
-    id: ObjectID
+    @PrimaryGeneratedColumn({name:"ID"})
+    id: number
 
-    @Column()
-    codPartido:ObjectID
+    @Column({name:"COD_PARTIDO"})
+    codPartido:number
 
-    @Column()
-    codRolUser:ObjectID
+    @Column({name:"COD_ROL_USER"})
+    codRolUser:number
 
-    @Column()
+    @Column({name:"LOCAL"})
     local:number
 
-    @Column()
+    @Column({name:"VISITANTE"})
     visitante:number
 
-    @Column()
-    localPenales:number
+    @Column({name:"LOCAL_PENAL"})
+    localPenal:number
 
-    @Column()
-    visitantePenales:number
+    @Column({name:"VISITANTE_PENAL"})
+    visitantePenal:number
 
-    @Column()
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO, length:1})
     estado:string
 
-    @CreateDateColumn()
+    @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column()
+    @Column({name:"FECHA_MODIFICACION",nullable:true})
     fechaModificacion:Date
     
-    @Column()
+    @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column()
+    @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
     
     constructor(params: ApuestaDto = {} as ApuestaDto){
-        this.codPartido = new ObjectID(params.codPartido);
-        this.codRolUser = new ObjectID(params.codRolUser);
+        this.codPartido = (params.codPartido);
+        this.codRolUser = (params.codRolUser);
         this.local = params.local;
         this.visitante = params.visitante;
-        this.localPenales = params.localPenales;
-        this.visitantePenales = params.visitantePenales;
+        this.localPenal = params.localPenal;
+        this.visitantePenal = params.visitantePenal;
         this.estado = this.estado || EstadoEnum.ACTIVO;
     }
 }

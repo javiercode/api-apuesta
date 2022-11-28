@@ -21,7 +21,7 @@ export interface RolDtoForm {
 }
 
 export const RolRegex: RolDtoForm = {
-    codigo: "^[a-fA-F0-9]{3,10}$",
+    codigo: "^[a-zA-Z0-9_]{3,10}$",
     descripcion: "^[a-fA-F0-9]{3,300}$",
     jerarquia: "^[0-9]{1,3}$",
 };

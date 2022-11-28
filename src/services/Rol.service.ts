@@ -1,5 +1,4 @@
 import { IRol } from './interfaces/IRol.interface';
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { RolEditDto, RolDto } from '../entities/dto/RolDto';
 import { Rol} from '../entities/Rol';

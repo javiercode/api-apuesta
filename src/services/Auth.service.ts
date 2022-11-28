@@ -1,6 +1,5 @@
 
 import { IAuth } from './interfaces/IAuth.interface';
-import { MongoDataSource } from "../configs/db";
 import { JwtPayload } from '../entities/dto/GeneralDto';
 import { MessageResponse,LoginResponce } from '../entities/dto/GeneralDto'
 import UsersService from './User.service';
@@ -19,26 +18,38 @@ class AuthService implements IAuth {
         try {
             const verifyUser = await this.verifyCredential(username, password);
             if(verifyUser.success){
-                const usuarioXSucursal = await UsersService.getUsuario(username);
-                const userRol = await RolUserRepository.findByUser(username);
-                if (usuarioXSucursal.length >= 1) {
-                    result = {
-                        success: true,
-                        message: 'Sesion iniciada',
-                        code: 0,
-                        data: {
-                            'NOMBRE': verifyUser.data?.name,
-                            'CORREO': verifyUser.data?.correo,
-                            'ROL_USER': userRol?.data,
-                        }
-                    };
-                } else {
-                    result.message = "Usuario no encontrado";
-                }
+                const userRolDetalle = await RolUserRepository.findDetalleByUser(username);
+                result = {
+                    success: true,
+                    message: 'Sesion iniciada',
+                    code: 0,
+                    data: userRolDetalle
+                };
             }else{
                 result.success = verifyUser.success
                 result.message = verifyUser.message
             }
+        } catch (error) {
+            console.error(error);
+        }
+        return result;
+
+    }
+
+    async getMetadata(username: string): Promise<MessageResponse> {
+        let result: MessageResponse = {
+            success: false,
+            message: 'Sin regitros',
+            code: 0,
+        }
+        try {
+            const userRolDetalle = await RolUserRepository.findDetalleByUser(username);
+            result = {
+                success: true,
+                message: 'Obtención exitosa!',
+                code: 0,
+                data: userRolDetalle
+            };
         } catch (error) {
             console.error(error);
         }
@@ -77,7 +88,7 @@ class AuthService implements IAuth {
     encrypt(password: string): string {
         let salt = process.env.PASS_SALT + "";
         let hash = crypto.pbkdf2Sync(password, salt,
-            1000, 64, `sha512`).toString(`hex`);
+            300, 64, `sha512`).toString(`hex`);
         return hash;
     }
 }

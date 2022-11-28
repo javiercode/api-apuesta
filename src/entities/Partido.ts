@@ -1,53 +1,61 @@
-import {Column, Entity, PrimaryColumn, CreateDateColumn, ObjectIdColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index } from 'typeorm';
-import { ObjectId, ObjectID } from 'mongodb';
+import {Column, Entity, PrimaryColumn, CreateDateColumn, OneToOne, JoinColumn,ManyToOne, BaseEntity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { PartidoDto } from './dto/PartidoDto';
 import { EstadoEnum } from '../configs/Config.enum';
+import { Equipo } from './Equipo';
 
-@Entity('Partido')
+@Entity('partido')
 export class Partido{
     
-    @ObjectIdColumn()
-    public id: ObjectID
+    @PrimaryGeneratedColumn({name:"ID"})
+    public id: number
 
-    @Column()
-    local: ObjectID
+    @Column({name:"LOCAL"})
+    codLocal: number
 
-    @Column()
-    visitante: ObjectID
+    @Column({name:"VISITANTE"})
+    codVisitante: number
 
-    @Column()
+    @Column({name:"FECHA"})
     fecha: Date
 
-    @Column()
+    @Column({name:"MARCADOR_LOCAL",nullable:true})
     marcadorLocal: number
 
-    @Column()
+    @Column({name:"MARCADOR_VISITANTE",nullable:true})
     marcadorVisitante: number
 
-    @Column()
+    @Column({name:"PENALES_LOCAL",nullable:true})
     penalesLocal: number
 
-    @Column()
+    @Column({name:"PENALES_VISITANTE",nullable:true})
     penalesVisitante: number
 
-    @Column()
+    @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
     estado:string
 
-    @CreateDateColumn()
+    @CreateDateColumn({name:"FECHA_REGISTRO"})
     fechaRegistro:Date
 
-    @Column()
+    @Column({name:"FECHA_MODIFICACION",nullable:true})
     fechaModificacion:Date
     
-    @Column()
+    @Column({name:"USUARIO_REGISTRO",length:50})
     usuarioRegistro:string
 
-    @Column()
+    @Column({name:"USUARIO_MODIFICACION", length:50,nullable:true})
     usuarioModificacion:string
+
+    @OneToOne(() => Equipo)
+    @JoinColumn({name:'LOCAL'})
+    local: Equipo
+
+    @OneToOne(() => Equipo)
+    @JoinColumn({name:'VISITANTE'})
+    visitante: Equipo
     
     constructor(params: PartidoDto = {} as PartidoDto){
-        this.local= new ObjectId(params.local);
-        this.visitante= new ObjectId(params.visitante);
+        this.codLocal= (params.codLocal);
+        this.codVisitante= (params.codVisitante);
         this.fecha= params.fecha;
         this.marcadorLocal= params.marcadorLocal;
         this.marcadorVisitante= params.marcadorVisitante;

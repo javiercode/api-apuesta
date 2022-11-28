@@ -1,5 +1,5 @@
 import { DeleteResult, EntityRepository, Repository, UpdateResult } from "typeorm";
-import {MongoDataSource} from "../configs/db";
+import {MysqlDataSource} from "../configs/db";
 import { ListPaginate } from "../entities/dto/GeneralDto"
 import { EstadoEnum } from "../configs/Config.enum"
 import { GrupoDto } from "../entities/dto/GrupoDto";
@@ -8,7 +8,7 @@ import { Grupo } from "../entities/Grupo";
 
 
 class RolRepository {
-    private repository = MongoDataSource.getRepository(Grupo);
+    private repository = MysqlDataSource.getRepository(Grupo);
 
     public async  findByDto (params: GrupoDto): Promise<ListPaginate |null>{
         let options={}
@@ -71,7 +71,6 @@ class RolRepository {
         const firstUser = await this.repository.delete(options);
         return firstUser;
     };
-
 
     public async  listAll (): Promise<ListPaginate>{
         let options={}

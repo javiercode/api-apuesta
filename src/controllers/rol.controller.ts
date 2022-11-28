@@ -1,7 +1,6 @@
 import { Request, response, Response } from "express";
 import { getAuthUser } from '../configs/TokenMiddleware';
 import { RolUser } from '../entities/RolUser';
-import { MongoDataSource } from "../configs/db";
 import jwt from 'jsonwebtoken';
 import RolService from '../services/Rol.service';
 

@@ -21,6 +21,16 @@ class PartidoController {
         return res.status(200).send(result);
     }
 
+    public async findFecha(req: Request, res: Response) {
+        const fecha = req.body.fecha;
+        let result = validateParams(fecha,TypeKeyParamEnum.DATE)
+        
+        if(result.success){
+            result = await PartidoService.findByDate(fecha);
+        }
+        return res.status(200).send(result);
+    }
+
     public async create(req: Request, res: Response) {
         const userDto = req.body as PartidoDto;
         const result = await PartidoService.create(userDto, getAuthUser(req));
@@ -29,7 +39,7 @@ class PartidoController {
 
     public async edit(req: Request, res: Response) {
         const userDto = req.body as PartidoEditDto;
-        let result = validateParams(req.params.id,TypeKeyParamEnum.OBJECT_ID)
+        let result = validateParams(req.params.id,TypeKeyParamEnum.PK_ORACLE)
         
         if(result.success){
             result = await PartidoService.edit((req.params.id), userDto, getAuthUser(req));

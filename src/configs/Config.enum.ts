@@ -5,9 +5,8 @@ enum RolesEnum {
 }
 
 enum EstadoEnum {
-    FINALIZADO = 'F',
     ACTIVO = 'A',
-    PROCESO = 'P',
+    PENDIENTE = 'P',
     ELIMINADO = 'D',
 }
 
@@ -17,8 +16,8 @@ enum TipoGrupoEnum {
 }
 
 enum TipoPrivacidadEnum {
-    PUBLICO = 'PUB',
-    PRIVADO = 'PR'
+    ABIERTO = 'A',
+    PRIVADO = 'P'
 }
 
 enum TypeKeyParamEnum {
@@ -30,6 +29,8 @@ enum TypeKeyParamEnum {
     PASSWORD = 'password',
     PARAM_BUSQUEDA = 'busqueda',
     TIPO_TAREA = 'Tipo tarea',
+    DATETIME = 'Fecha y Hora',
+    DATE = 'Fecha',
 }
 
 export  {TypeKeyParamEnum,RolesEnum, EstadoEnum}
