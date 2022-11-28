@@ -18,16 +18,16 @@ export class Partido{
     @Column({name:"FECHA"})
     fecha: Date
 
-    @Column({name:"MARCADOR_LOCAL"})
+    @Column({name:"MARCADOR_LOCAL",nullable:true})
     marcadorLocal: number
 
-    @Column({name:"MARCADOR_VISITANTE"})
+    @Column({name:"MARCADOR_VISITANTE",nullable:true})
     marcadorVisitante: number
 
-    @Column({name:"PENALES_LOCAL"})
+    @Column({name:"PENALES_LOCAL",nullable:true})
     penalesLocal: number
 
-    @Column({name:"PENALES_VISITANTE"})
+    @Column({name:"PENALES_VISITANTE",nullable:true})
     penalesVisitante: number
 
     @Column({name:"ESTADO",default: EstadoEnum.ACTIVO,length:1})
