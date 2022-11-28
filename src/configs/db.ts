@@ -23,7 +23,6 @@ export const MysqlDataSource = new DataSource({
     //     },
     // },
 
-
     type: 'mysql',
     host: process.env.MYSQLDB_HOST,
     port: Number(process.env.MYSQLDB_PORT),
