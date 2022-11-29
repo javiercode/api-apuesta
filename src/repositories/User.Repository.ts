@@ -52,11 +52,9 @@ class UserRepository{
     };
 
     public async findByIdActive(params: string): Promise<User | null> {
-    // public async findByIdActive(params: string): Promise<User[]> {
         let options={}
         options = {
             where: {
-                // _id: new ObjectID(params),
                 _id: params,
                 estado: EstadoEnum.ACTIVO
             },

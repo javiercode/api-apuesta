@@ -122,10 +122,21 @@ class PartidoRepository {
             .where("Partido.fecha >= :startDate", { startDate: startDate })
             .andWhere("Partido.fecha <= :endDate", { endDate: endDate })
             .getMany();
-
         return rolUsers;
     };
-    
+
+    public async findMoreDate (fecha:Date): Promise<Partido[]>{
+        var startDate = getFecha(fecha);
+        startDate.setHours(0, 0, 0, 0);
+
+        const rolUsers = await this.repository
+            .createQueryBuilder("Partido")
+            .leftJoinAndSelect("Partido.local", "local")
+            .leftJoinAndSelect("Partido.visitante", "visitante")
+            .where("Partido.fecha >= :startDate", { startDate: startDate })
+            .getMany();
+        return rolUsers;
+    };
 
     public async save(params: Partido): Promise<Partido> {
         const oRol = await this.repository.save(params);
