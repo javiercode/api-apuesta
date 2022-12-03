@@ -1,15 +1,15 @@
-@api = http://localhost:4000/apuesta/api/v1
-# @api = http://192.168.27.141:9091
+# @api = http://localhost:4000/apuesta/api/v1
+@api = https://enigmatic-peak-05261.herokuapp.com/apuesta/api/v1
 #@api = http://192.168.27.141:4000/micliente/api/v3
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmllcmNvZGUiLCJuYW1lIjoiSmF2aWVyIEVsdmlzIiwiYVJvbElkIjowLCJhU3VjdXJzYWwiOltdLCJzdWN1cnNhbCI6MCwiYWN0aXZvIjp0cnVlLCJpYXQiOjE2NjcxNzc1MDgsImV4cCI6MTY2NzIyMDcwOH0.HuCGoAP38sQwCuzpYcEsGVmS4LwE9-7YK6Jb5Eg_FDU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhhdmkiLCJhY3Rpdm8iOnRydWUsImlhdCI6MTY2OTY4NjEzNywiZXhwIjoxNjY5NzI5MzM3fQ.WQz-a98IQDht64sQKBMuIfzZlE3M-OzaXy3x_AkR3-8
 
 ### Login
 POST {{api}}/login
 Content-Type: application/json
 
 {
-    "username":"javier",
-    "password":"123456"
+    "username":"xavi",
+    "password":"radames"
 }
 
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "username":"xaviercode",
+    "username":"xavi",
     "nombre":"Javier Elvis",
     "correo":"javier.azote@gmail.com",
     "password":"radames",
